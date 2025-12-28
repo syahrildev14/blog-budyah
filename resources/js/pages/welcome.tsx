@@ -1,396 +1,193 @@
-import Img1 from '@/assets/1hero.jfif';
-import Img2 from '@/assets/2hero.jfif';
-import Img3 from '@/assets/3hero.jfif';
-import Img4 from '@/assets/4hero.jfif';
-import Img5 from '@/assets/5hero.jfif';
-import Img10 from '@/assets/dummy1.svg';
+// images
+import ImgHero1 from "@/assets/1hero.jfif";
+import ImgHero2 from "@/assets/2hero.jfif";
+import ImgHero3 from "@/assets/3hero.jfif";
+import ImgHero4 from "@/assets/4hero.jfif";
+// icons
+import { FaArrowDown } from 'react-icons/fa';
 
-import { dashboard, login } from '@/routes';
-import { type SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
-import { FiChevronDown } from 'react-icons/fi';
+import { Link } from '@inertiajs/react';
+import AppLayout from '@/layouts/app-layout';
 
-export default function Welcome({
-    canRegister = true,
-}: {
-    canRegister?: boolean;
-}) {
-    const { auth } = usePage<SharedData>().props;
-    const [openContoh, setOpenContoh] = useState(false);
-    const [openKategori, setOpenKategori] = useState(false);
-
+export default function Home() {
     return (
-        <>
-            <Head title="Home | Blog Bu Dyah">
-                <link rel="preconnect" href="https://fonts.bunny.net" />
-                <link
-                    href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600"
-                    rel="stylesheet"
-                />
-            </Head>
+        <div>
+            {/* Hero Section */}
+            <section className="bg-white">
+                <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                    {/* Left Content */}
+                    <div>
+                        <span className="inline-block mb-4 text-sm text-red-600 font-semibold">
+                            Selamat Datang
+                        </span>
 
-            <div className="flex min-h-screen flex-col bg-[#FDFDFC] text-[#1b1b18] dark:bg-[#0a0a0a] dark:text-[#EDEDEC]">
-                {/* HEADER */}
-                <header className="sticky top-0 z-50 w-full bg-primary/90 text-white backdrop-blur">
-                    <div className="mx-auto flex max-w-6xl items-center justify-between p-4">
-                        <h1 className="text-lg font-semibold">
-                            Cerita Bahasa Jawa
-                        </h1>
-
-                        <nav className="flex items-center gap-4 text-sm font-semibold">
-                            <Link href="/" className="hover:underline">
-                                Home
-                            </Link>
-
-                            {/* contoh cerkak */}
-                            <div className="relative">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setOpenContoh(!openContoh);
-                                        setOpenKategori(false);
-                                    }}
-                                    className="flex cursor-pointer items-center gap-1"
-                                >
-                                    Contoh Cerkak
-                                    <FiChevronDown
-                                        className={`text-sm transition-transform duration-200 ${
-                                            openContoh ? 'rotate-180' : ''
-                                        }`}
-                                    />
-                                </button>
-
-                                {openContoh && (
-                                    <div className="absolute left-0 z-50 mt-2 w-44 rounded-md border bg-white shadow-lg dark:bg-[#111]">
-                                        <Link
-                                            href="/kategori/kelas-vii"
-                                            className="block px-4 py-2 text-sm text-slate-600 hover:bg-black/5"
-                                        >
-                                            Kelas VII
-                                        </Link>
-                                        <Link
-                                            href="/kategori/kelas-viii"
-                                            className="block px-4 py-2 text-sm text-slate-600 hover:bg-black/5"
-                                        >
-                                            Kelas VIII
-                                        </Link>
-                                        <Link
-                                            href="/kategori/kelas-ix"
-                                            className="block px-4 py-2 text-sm text-slate-600 hover:bg-black/5"
-                                        >
-                                            Kelas IX
-                                        </Link>
-                                        <Link
-                                            href="/kategori/umum"
-                                            className="block px-4 py-2 text-sm text-slate-600 hover:bg-black/5"
-                                        >
-                                            Umum
-                                        </Link>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* kategori */}
-                            <div className="relative">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setOpenKategori(!openKategori);
-                                        setOpenContoh(false);
-                                    }}
-                                    className="flex cursor-pointer items-center gap-1"
-                                >
-                                    Kategori Cerkak
-                                    <FiChevronDown
-                                        className={`text-sm transition-transform duration-200 ${
-                                            openKategori ? 'rotate-180' : ''
-                                        }`}
-                                    />
-                                </button>
-
-                                {openKategori && (
-                                    <div className="absolute left-0 z-50 mt-2 w-44 rounded-md border bg-white shadow-lg dark:bg-[#111]">
-                                        <Link
-                                            href="/kategori/kelas-vii"
-                                            className="block px-4 py-2 text-sm text-slate-600 hover:bg-black/5"
-                                        >
-                                            Kelas VII
-                                        </Link>
-                                        <Link
-                                            href="/kategori/kelas-viii"
-                                            className="block px-4 py-2 text-sm text-slate-600 hover:bg-black/5"
-                                        >
-                                            Kelas VIII
-                                        </Link>
-                                        <Link
-                                            href="/kategori/kelas-ix"
-                                            className="block px-4 py-2 text-sm text-slate-600 hover:bg-black/5"
-                                        >
-                                            Kelas IX
-                                        </Link>
-                                        <Link
-                                            href="/kategori/umum"
-                                            className="block px-4 py-2 text-sm text-slate-600 hover:bg-black/5"
-                                        >
-                                            Umum
-                                        </Link>
-                                    </div>
-                                )}
-                            </div>
-
-                            {auth.user ? (
-                                <Link
-                                    href={dashboard()}
-                                    className="rounded-sm border px-4 py-1.5 hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
-                                >
-                                    Dashboard
-                                </Link>
-                            ) : (
-                                <Link
-                                    href={login()}
-                                    className="rounded-sm bg-white px-5 py-1.5 font-semibold text-slate-600 duration-300 hover:bg-white/80"
-                                >
-                                    Post
-                                </Link>
-                            )}
-                        </nav>
-                    </div>
-                </header>
-
-                {/* HERO SECTION */}
-                <section className="relative overflow-hidden bg-[#F6F1E8] px-6 py-24">
-                    <div className="mx-auto max-w-6xl text-center">
-                        <h1 className="mb-4 text-4xl leading-tight font-bold md:text-5xl">
-                            Blog Cerkak Bahasa Jawa
+                        <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
+                            Kumpulan Cerkak & Cerita
                             <br />
-                            <span className="text-primary">
-                                Nulis cerkak basa Jawa, sederhana nanging ngena
-                            </span>
+                            <span className="text-red-600">Cerkak Bu Dyah</span>
                         </h1>
 
-                        <p className="mx-auto mb-8 max-w-2xl text-black/60">
-                            Tulisen pikiran lan rasa nganggo basa Jawa, dadi
-                            cerkak cekak sing kebak makna.
+                        <p className="text-gray-600 mb-8 max-w-lg">
+                            Bacaan cerpen, cerita anak, cerita kehidupan, hingga cerita inspiratif
+                            untuk siswa dan umum. Disusun dengan bahasa sederhana dan menarik.
                         </p>
 
-                        <Link
-                            href="/"
-                            className="= inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-medium text-white duration-300 hover:scale-105"
-                        >
-                            Mulai Baca
-                            <span className="text-lg">→</span>
-                        </Link>
-                    </div>
-
-                    {/* IMAGE ARC */}
-                    <div className="relative mx-auto mt-16 flex max-w-6xl justify-center">
                         <div className="flex gap-4">
-                            {[Img1, Img2, Img3, Img4, Img5].map((img, i) => (
-                                <div
-                                    key={i}
-                                    className="relative h-64 w-44 overflow-hidden rounded-2xl shadow-lg"
-                                    style={{
-                                        transform: `translateY(${Math.abs(2 - i) * 18}px)`,
-                                    }}
-                                >
-                                    <img
-                                        src={img}
-                                        alt="User"
-                                        className="h-full w-full object-cover"
-                                    />
-                                </div>
-                            ))}
+                            <Link
+                                href="#popular"
+                                className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-md
+               hover:bg-red-700 transition"
+                            >
+                                Mulai Membaca
+                                <FaArrowDown className="animate-bounce" />
+                            </Link>
+
+                            <Link
+                                href="/materi"
+                                className="px-6 py-3 border border-gray-300 rounded-md
+                                       hover:border-red-600 hover:text-red-600 transition"
+                            >
+                                Materi Cerkak
+                            </Link>
                         </div>
                     </div>
 
-                    {/* FEATURES */}
-                    <div className="mx-auto mt-20 grid max-w-5xl grid-cols-1 gap-10 text-center md:grid-cols-3">
-                        <div>
-                            <h3 className="mb-2 font-semibold">
-                                Crita Urip ing Basa Jawa
-                            </h3>
-                            <p className="text-sm text-black/60">
-                                Nampilaké cerkak-cerkak kang nyritakaké lelakon
-                                gesang saben dina, ditulis nganggo basa Jawa
-                                supaya luwih cedhak karo rasa lan budaya.
-                            </p>
-                        </div>
-
-                        <div>
-                            <h3 className="mb-2 font-semibold">
-                                Cerkak Basa Jawa, Gaya Anyar
-                            </h3>
-                            <p className="text-sm text-black/60">
-                                Crita cekak basa Jawa kanthi pendekatan modern,
-                                nggandhengaké tradhisi lan pikiran jaman saiki
-                                supaya tetep relevan lan nyenengaké.
-                            </p>
-                        </div>
-
-                        <div>
-                            <h3 className="mb-2 font-semibold">
-                                Ukara Cekak, Crita Gesang
-                            </h3>
-                            <p className="text-sm text-black/60">
-                                Sanajan cekak ukarané, saben crita ngemot makna
-                                gesang, piwulang, lan rasa kang bisa dadi bahan
-                                renungan kanggo sing maca.
-                            </p>
-                        </div>
+                    {/* Right Image */}
+                    <div className="hidden md:grid grid-cols-2 gap-4 justify-center">
+                        <img
+                            src={ImgHero1}
+                            alt="Hero 1"
+                            className="w-full h-40 object-cover rounded-lg shadow-sm"
+                        />
+                        <img
+                            src={ImgHero2}
+                            alt="Hero 2"
+                            className="w-full h-40 object-cover rounded-lg shadow-sm"
+                        />
+                        <img
+                            src={ImgHero3}
+                            alt="Hero 3"
+                            className="w-full h-40 object-cover rounded-lg shadow-sm"
+                        />
+                        <img
+                            src={ImgHero4}
+                            alt="Hero 4"
+                            className="w-full h-40 object-cover rounded-lg shadow-sm"
+                        />
                     </div>
-                </section>
+                </div>
+            </section>
 
-                {/* BLOG SECTION */}
-                <section className="bg-white px-6 py-20">
-                    <div className="mx-auto max-w-6xl">
-                        {/* LATEST POSTS */}
-                        <h2 className="mb-6 border-b pb-2 text-lg font-semibold">
-                            Latest Posts
-                        </h2>
+            {/* Popular Post */}
+            <section id="popular" className="bg-white rounded-md p-6">
+                <h2 className="text-xl font-semibold mb-6">Popular Posts</h2>
 
-                        <div className="grid gap-8 md:grid-cols-3">
-                            {[...Array(6)].map((_, i) => (
-                                <div key={i} className="flex gap-4">
-                                    <img
-                                        src={Img10}
-                                        alt="Post"
-                                        className="h-24 w-24 rounded object-cover"
-                                    />
-                                    <div>
-                                        <h3 className="cursor-pointer leading-snug font-semibold hover:underline">
-                                            Dorem ipsum quia dolor sit amet,
-                                            consectetur, adipisci velit...
-                                        </h3>
-                                        <p className="mt-1 text-sm text-black/60">
-                                            Lorem Ipsum has been the industry's
-                                            standard dummy text ever since the
-                                            1500s.
-                                        </p>
-                                        <p className="mt-2 text-xs font-medium">
-                                            Jhon Doe, Mar 20
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    {/* ===== Featured Post (1) ===== */}
+                    <Link
+                        href="#"
+                        className="lg:col-span-2 lg:row-span-2 group relative rounded-md overflow-hidden"
+                    >
+                        <img
+                            src="https://picsum.photos/600/400"
+                            alt="Featured"
+                            className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                        />
+
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-4 flex flex-col justify-end">
+                            <span className="text-xs text-red-400 mb-1">Popular</span>
+                            <h3 className="text-lg font-semibold text-white leading-tight">
+                                Contoh Judul Artikel Popular Paling Banyak Dibaca
+                            </h3>
+                            <span className="text-xs text-gray-300 mt-1">
+                                2 hari lalu
+                            </span>
                         </div>
+                    </Link>
 
-                        {/* POPULAR POSTS + SIDEBAR */}
-                        <div className="mt-20 grid gap-12 md:grid-cols-3">
-                            {/* POPULAR POSTS */}
-                            <div className="md:col-span-2">
-                                <h2 className="mb-6 border-b pb-2 text-lg font-semibold">
-                                    Popular Posts
-                                </h2>
 
-                                <div className="grid gap-10 md:grid-cols-2">
-                                    {[...Array(10)].map((_, i) => (
-                                        <div
-                                            key={i}
-                                            className="cursor-pointer duration-300 hover:scale-105"
-                                        >
-                                            <img
-                                                src={Img10}
-                                                alt="Popular post"
-                                                className="mb-4 h-48 w-full rounded object-cover"
-                                            />
-                                            <h3 className="font-semibold">
-                                                Dorem ipsum quia dolor sit amet,
-                                                consectetur, adipisci velit...
-                                            </h3>
-                                            <p className="mt-2 text-sm text-black/60">
-                                                Lorem Ipsum has been the
-                                                industry's standard dummy text
-                                                ever since the 1500s.
-                                            </p>
-                                            <p className="mt-2 text-xs font-medium">
-                                                Jhon Doe, Mar 20
-                                            </p>
-                                        </div>
-                                    ))}
-                                </div>
+                    {/* ===== Medium Posts (2) ===== */}
+                    {[1, 2].map((item) => (
+                        <Link
+                            key={item}
+                            href="#"
+                            className="lg:col-span-2 group flex gap-4"
+                        >
+                            <img
+                                src="https://picsum.photos/200/150"
+                                alt="post"
+                                className="w-32 h-24 object-cover rounded-md"
+                            />
+                            <div>
+                                <h3 className="font-medium text-sm group-hover:text-red-600 transition">
+                                    Judul artikel populer ukuran sedang
+                                </h3>
+                                <span className="text-xs text-gray-500">
+                                    3 jam lalu
+                                </span>
                             </div>
+                        </Link>
+                    ))}
 
-                            {/* SIDEBAR */}
-                            <aside className="space-y-10 self-start md:sticky md:top-20">
-                                {/* SOCIAL MEDIA */}
-                                <div>
-                                    <h3 className="mb-4 bg-primary px-4 py-2 font-semibold text-white">
-                                        Sosial Media
-                                    </h3>
-                                    <ul className="space-y-2 border p-4">
-                                        {[
-                                            'Whatsapp',
-                                            'Instagram',
-                                            'Facebook',
-                                            'Twitter',
-                                        ].map((item) => (
-                                            <li
-                                                key={item}
-                                                className="flex items-center justify-between border-b py-2 last:border-none"
-                                            >
-                                                <span>{item}</span>
-                                                <span>→</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
+                    {/* ===== Small Posts (4) ===== */}
+                    {[1, 2, 3, 4].map((item) => (
+                        <Link
+                            key={item}
+                            href="#"
+                            className="group flex gap-3"
+                        >
+                            <img
+                                src="https://picsum.photos/100/100"
+                                alt="post"
+                                className="w-20 h-20 object-cover rounded"
+                            />
+                            <div>
+                                <h4 className="text-sm font-medium leading-snug group-hover:text-red-600 transition">
+                                    Judul artikel kecil populer
+                                </h4>
+                                <span className="text-xs text-gray-500">
+                                    1 jam lalu
+                                </span>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </section>
 
-                                {/* CATEGORY */}
-                                <div>
-                                    <h3 className="mb-4 bg-primary px-4 py-2 font-semibold text-white">
-                                        Kategori
-                                    </h3>
-                                    <ul className="space-y-2 border p-4">
-                                        {[
-                                            'Kelas VII',
-                                            'Kelas VIII',
-                                            'Kelas IX',
-                                            'Umum',
-                                        ].map((cat) => (
-                                            <li
-                                                key={cat}
-                                                className="flex items-center justify-between border-b py-2 last:border-none"
-                                            >
-                                                <span>{cat}</span>
-                                                <span>→</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
+            {/* List */}
+            <section className="bg-white rounded-md p-6">
+                <h2 className="text-xl font-semibold mb-6">Top Posts</h2>
 
-                                {/* TAGS */}
-                                <div>
-                                    <h3 className="mb-4 bg-primary px-4 py-2 font-semibold text-white">
-                                        Tags
-                                    </h3>
-                                    <ul className="space-y-2 border p-4">
-                                        {[
-                                            'Kelas VII',
-                                            'Kelas VIII',
-                                            'Kelas IX',
-                                            'Umum',
-                                        ].map((cat) => (
-                                            <li
-                                                key={cat}
-                                                className="flex items-center justify-between border-b py-2 last:border-none"
-                                            >
-                                                <span>{cat}</span>
-                                                <span>→</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </aside>
-                        </div>
-                    </div>
-                </section>
+                <div className="space-y-6">
+                    {/* ===== List Top 10 Posts ===== */}
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
+                        <Link
+                            key={item}
+                            href="#"
+                            className="group flex w-full gap-5"
+                        >
+                            <img
+                                src="https://picsum.photos/160/160"
+                                alt="post"
+                                className="w-72 h-42 object-cover rounded-md flex-shrink-0"
+                            />
 
-                {/* FOOTER */}
-                <footer className="border-t border-black/10 p-4 text-center text-sm dark:border-white/10">
-                    © {new Date().getFullYear()} Blog Education
-                </footer>
-            </div>
-        </>
+                            <div className="flex flex-col">
+                                <h4 className="font-semibold text-2xl leading-snug group-hover:text-red-600 transition">
+                                    Judul artikel populer versi list ke bawah
+                                </h4>
+                                <p className='text-justify leading-relaxed'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, totam. Eius harum natus aperiam cumque magnam officia nesciunt placeat quam accusamus, sit id exercitationem assumenda reprehenderit laboriosam perferendis provident quo?</p>
+                                <span className="text-sm text-gray-500 mt-1">
+                                    3 jam lalu
+                                </span>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+
+            </section>
+        </div>
     );
 }
+
+Home.layout = (page: any) => <AppLayout>{page}</AppLayout>;
