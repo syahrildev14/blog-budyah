@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
+use App\Http\Controllers\PostController;
+use Laravel\Fortify\Fortify;
+
 
 // Route Public
 Route::get('/', function () {
@@ -80,6 +83,14 @@ Route::get('/umum', function () {
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('umum');
+// ==============================================================
+// Detail Cerkak
+// ==============================================================
+Route::get('/blog/{slug}', function () {
+    return Inertia::render('detail-cerkak', [
+        'canRegister' => Features::enabled(Features::registration()),
+    ]);
+})->name('detail-cerkak');
 
 
 
@@ -88,10 +99,15 @@ Route::get('/umum', function () {
 
 // Authenticated and verified routes
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+Route::middleware('auth')->group(function () {
+    Route::get('/post/create', [PostController::class, 'create']);
+    Route::post('/post', [PostController::class, 'store']);
 });
+// ==============================================================
+// Fortify Auth Views
+// ==============================================================
+Fortify::registerView(fn() => Inertia::render('auth/register'));
+Fortify::loginView(fn() => Inertia::render('auth/login'));
+
 
 require __DIR__.'/settings.php';

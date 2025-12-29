@@ -1,115 +1,99 @@
-import { login } from '@/routes';
-import { store } from '@/routes/register';
 import { Form, Head } from '@inertiajs/react';
+import { register } from '@/routes';
 
-import InputError from '@/components/input-error';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
-import AuthLayout from '@/layouts/auth-layout';
+interface RegisterProps {
+    status?: string;
+}
 
-export default function Register() {
+export default function Register({ status }: RegisterProps) {
     return (
-        <AuthLayout
-            title="Create an account"
-            description="Enter your details below to create your account"
-        >
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
             <Head title="Register" />
-            <Form
-                {...store.form()}
-                resetOnSuccess={['password', 'password_confirmation']}
-                disableWhileProcessing
-                className="flex flex-col gap-6"
-            >
-                {({ processing, errors }) => (
-                    <>
-                        <div className="grid gap-6">
-                            <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
-                                <Input
+            <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-8">
+                <h2 className="text-2xl font-bold mb-4 text-center">Create your account</h2>
+                <p className="text-sm text-gray-600 mb-6 text-center">
+                    Enter your details below to register
+                </p>
+
+                {status && (
+                    <div className="mb-4 text-center text-sm font-medium text-green-600">
+                        {status}
+                    </div>
+                )}
+
+                <Form method="post" action={register()} className="flex flex-col gap-4">
+                    {({ processing, errors }) => (
+                        <>
+                            <div className="flex flex-col gap-1">
+                                <label htmlFor="name">Name</label>
+                                <input
                                     id="name"
                                     type="text"
+                                    name="name"
                                     required
                                     autoFocus
-                                    tabIndex={1}
-                                    autoComplete="name"
-                                    name="name"
-                                    placeholder="Full name"
+                                    placeholder="Your Name"
+                                    className="px-3 py-2 border rounded focus:ring-1 focus:ring-red-600"
                                 />
-                                <InputError
-                                    message={errors.name}
-                                    className="mt-2"
-                                />
+                                {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
                             </div>
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
-                                <Input
+                            <div className="flex flex-col gap-1">
+                                <label htmlFor="email">Email</label>
+                                <input
                                     id="email"
                                     type="email"
-                                    required
-                                    tabIndex={2}
-                                    autoComplete="email"
                                     name="email"
+                                    required
                                     placeholder="email@example.com"
+                                    className="px-3 py-2 border rounded focus:ring-1 focus:ring-red-600"
                                 />
-                                <InputError message={errors.email} />
+                                {errors.email && <p className="text-red-600 text-sm">{errors.email}</p>}
                             </div>
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="password">Password</Label>
-                                <Input
+                            <div className="flex flex-col gap-1">
+                                <label htmlFor="password">Password</label>
+                                <input
                                     id="password"
                                     type="password"
-                                    required
-                                    tabIndex={3}
-                                    autoComplete="new-password"
                                     name="password"
+                                    required
                                     placeholder="Password"
+                                    className="px-3 py-2 border rounded focus:ring-1 focus:ring-red-600"
                                 />
-                                <InputError message={errors.password} />
+                                {errors.password && <p className="text-red-600 text-sm">{errors.password}</p>}
                             </div>
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="password_confirmation">
-                                    Confirm password
-                                </Label>
-                                <Input
+                            <div className="flex flex-col gap-1">
+                                <label htmlFor="password_confirmation">Confirm Password</label>
+                                <input
                                     id="password_confirmation"
                                     type="password"
-                                    required
-                                    tabIndex={4}
-                                    autoComplete="new-password"
                                     name="password_confirmation"
-                                    placeholder="Confirm password"
-                                />
-                                <InputError
-                                    message={errors.password_confirmation}
+                                    required
+                                    placeholder="Confirm Password"
+                                    className="px-3 py-2 border rounded focus:ring-1 focus:ring-red-600"
                                 />
                             </div>
 
-                            <Button
+                            <button
                                 type="submit"
-                                className="mt-2 w-full"
-                                tabIndex={5}
-                                data-test="register-user-button"
+                                disabled={processing}
+                                className="bg-red-600 text-white py-2 rounded hover:bg-red-700 transition mt-2"
                             >
-                                {processing && <Spinner />}
-                                Create account
-                            </Button>
-                        </div>
+                                {processing ? 'Loading...' : 'Register'}
+                            </button>
+                        </>
+                    )}
+                </Form>
 
-                        <div className="text-center text-sm text-muted-foreground">
-                            Already have an account?{' '}
-                            <TextLink href={login()} tabIndex={6}>
-                                Log in
-                            </TextLink>
-                        </div>
-                    </>
-                )}
-            </Form>
-        </AuthLayout>
+                <p className="mt-4 text-center text-sm text-gray-600">
+                    Already have an account?{' '}
+                    <a href="/login" className="text-red-600 hover:underline">
+                        Log in
+                    </a>
+                </p>
+            </div>
+        </div>
     );
 }

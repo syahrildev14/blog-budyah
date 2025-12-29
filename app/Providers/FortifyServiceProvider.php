@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
+use App\Actions\Fortify\LoginResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -20,7 +21,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Override default login response untuk redirect ke "/"
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\LoginResponse::class,
+            LoginResponse::class
+        );
     }
 
     /**
@@ -28,9 +33,9 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->configureActions();
-        $this->configureViews();
         $this->configureRateLimiting();
+        $this->configureViews();
+        $this->configureActions();
     }
 
     /**
@@ -38,8 +43,8 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureActions(): void
     {
-        Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::createUsersUsing(CreateNewUser::class);
+        Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
     }
 
     /**
@@ -47,30 +52,30 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureViews(): void
     {
-        Fortify::loginView(fn (Request $request) => Inertia::render('auth/login', [
+        Fortify::loginView(fn(Request $request) => Inertia::render('auth/login', [
             'canResetPassword' => Features::enabled(Features::resetPasswords()),
             'canRegister' => Features::enabled(Features::registration()),
             'status' => $request->session()->get('status'),
         ]));
 
-        Fortify::resetPasswordView(fn (Request $request) => Inertia::render('auth/reset-password', [
+        Fortify::registerView(fn(Request $request) => Inertia::render('auth/register'));
+
+        Fortify::resetPasswordView(fn(Request $request) => Inertia::render('auth/reset-password', [
             'email' => $request->email,
             'token' => $request->route('token'),
         ]));
 
-        Fortify::requestPasswordResetLinkView(fn (Request $request) => Inertia::render('auth/forgot-password', [
+        Fortify::requestPasswordResetLinkView(fn(Request $request) => Inertia::render('auth/forgot-password', [
             'status' => $request->session()->get('status'),
         ]));
 
-        Fortify::verifyEmailView(fn (Request $request) => Inertia::render('auth/verify-email', [
+        Fortify::verifyEmailView(fn(Request $request) => Inertia::render('auth/verify-email', [
             'status' => $request->session()->get('status'),
         ]));
 
-        Fortify::registerView(fn () => Inertia::render('auth/register'));
+        Fortify::twoFactorChallengeView(fn() => Inertia::render('auth/two-factor-challenge'));
 
-        Fortify::twoFactorChallengeView(fn () => Inertia::render('auth/two-factor-challenge'));
-
-        Fortify::confirmPasswordView(fn () => Inertia::render('auth/confirm-password'));
+        Fortify::confirmPasswordView(fn() => Inertia::render('auth/confirm-password'));
     }
 
     /**
@@ -78,14 +83,13 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureRateLimiting(): void
     {
-        RateLimiter::for('two-factor', function (Request $request) {
-            return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        RateLimiter::for('login', function (Request $request) {
+            $email = (string) $request->email;
+            return Limit::perMinute(5)->by($email . $request->ip());
         });
 
-        RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
-
-            return Limit::perMinute(5)->by($throttleKey);
+        RateLimiter::for('two-factor', function (Request $request) {
+            return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
     }
 }

@@ -1,120 +1,94 @@
-import InputError from '@/components/input-error';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
-import AuthLayout from '@/layouts/auth-layout';
-import { register } from '@/routes';
-import { store } from '@/routes/login';
-import { request } from '@/routes/password';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, router } from '@inertiajs/react';
+import { useState } from 'react';
 
 interface LoginProps {
     status?: string;
-    canResetPassword: boolean;
-    canRegister: boolean;
 }
 
-export default function Login({
-    status,
-    canResetPassword,
-    canRegister,
-}: LoginProps) {
+export default function Login({ status }: LoginProps) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+
+    const submit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setProcessing(true);
+        setErrors({});
+
+        router.post('/login', { email, password }, {
+            onSuccess: () => {
+                router.visit('/'); // redirect ke /
+            },
+            onError: (err) => {
+                setErrors(err);
+            },
+            onFinish: () => setProcessing(false),
+        });
+    };
+
     return (
-        <AuthLayout
-            title="Log in to your account"
-            description="Enter your email and password below to log in"
-        >
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
             <Head title="Log in" />
+            <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-8">
+                <h2 className="text-2xl font-bold mb-4 text-center">Log in to your account</h2>
 
-            <Form
-                {...store.form()}
-                resetOnSuccess={['password']}
-                className="flex flex-col gap-6"
-            >
-                {({ processing, errors }) => (
-                    <>
-                        <div className="grid gap-6">
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    name="email"
-                                    required
-                                    autoFocus
-                                    tabIndex={1}
-                                    autoComplete="email"
-                                    placeholder="email@example.com"
-                                />
-                                <InputError message={errors.email} />
-                            </div>
-
-                            <div className="grid gap-2">
-                                <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
-                                    {canResetPassword && (
-                                        <TextLink
-                                            href={request()}
-                                            className="ml-auto text-sm"
-                                            tabIndex={5}
-                                        >
-                                            Forgot password?
-                                        </TextLink>
-                                    )}
-                                </div>
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    name="password"
-                                    required
-                                    tabIndex={2}
-                                    autoComplete="current-password"
-                                    placeholder="Password"
-                                />
-                                <InputError message={errors.password} />
-                            </div>
-
-                            <div className="flex items-center space-x-3">
-                                <Checkbox
-                                    id="remember"
-                                    name="remember"
-                                    tabIndex={3}
-                                />
-                                <Label htmlFor="remember">Remember me</Label>
-                            </div>
-
-                            <Button
-                                type="submit"
-                                className="mt-4 w-full"
-                                tabIndex={4}
-                                disabled={processing}
-                                data-test="login-button"
-                            >
-                                {processing && <Spinner />}
-                                Log in
-                            </Button>
-                        </div>
-
-                        {canRegister && (
-                            <div className="text-center text-sm text-muted-foreground">
-                                Don't have an account?{' '}
-                                <TextLink href={register()} tabIndex={5}>
-                                    Sign up
-                                </TextLink>
-                            </div>
-                        )}
-                    </>
+                {status && (
+                    <div className="mb-4 text-center text-sm font-medium text-green-600">
+                        {status}
+                    </div>
                 )}
-            </Form>
 
-            {status && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
-        </AuthLayout>
+                <form onSubmit={submit} className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor="email">Email</label>
+                        <input
+                            id="email"
+                            type="email"
+                            name="email"
+                            required
+                            autoFocus
+                            autoComplete="email"
+                            placeholder="email@example.com"
+                            className="px-3 py-2 border rounded focus:ring-1 focus:ring-red-600"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        {errors.email && <p className="text-red-600 text-sm">{errors.email}</p>}
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            id="password"
+                            type="password"
+                            name="password"
+                            required
+                            autoComplete="current-password"
+                            placeholder="Password"
+                            className="px-3 py-2 border rounded focus:ring-1 focus:ring-red-600"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        {errors.password && <p className="text-red-600 text-sm">{errors.password}</p>}
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={processing}
+                        className="bg-red-600 text-white py-2 rounded hover:bg-red-700 transition mt-2"
+                    >
+                        {processing ? 'Loading...' : 'Log in'}
+                    </button>
+                </form>
+
+                <p className="mt-4 text-center text-sm text-gray-600">
+                    Don't have an account?{' '}
+                    <a href="/register" className="text-red-600 hover:underline">
+                        Sign up
+                    </a>
+                </p>
+            </div>
+        </div>
     );
 }
