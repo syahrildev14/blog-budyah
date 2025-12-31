@@ -1,5 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
-import { register } from '@/routes';
+// import { register } from '@/routes';
 
 interface RegisterProps {
     status?: string;
@@ -21,7 +21,7 @@ export default function Register({ status }: RegisterProps) {
                     </div>
                 )}
 
-                <Form method="post" action={register()} className="flex flex-col gap-4">
+                <Form method="post" action="/register" className="flex flex-col gap-4">
                     {({ processing, errors }) => (
                         <>
                             <div className="flex flex-col gap-1">

@@ -36,6 +36,9 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
         $this->configureViews();
         $this->configureActions();
+
+        Fortify::redirects('register', '/');
+        
     }
 
     /**
