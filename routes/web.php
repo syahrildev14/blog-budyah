@@ -5,6 +5,9 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\PostController;
 use Laravel\Fortify\Fortify;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CommentController;
+
 
 
 // Route Public
@@ -58,56 +61,61 @@ Route::get('/cerita-misteri', function () {
 // ==============================================================
 // Katgori
 // ==============================================================
-Route::get('/sd-mi', function () {
-    return Inertia::render('kategori/sd', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('sd-mi');
-// ==============================================================
-Route::get('/smp-mts', function () {
-    return Inertia::render('kategori/smp', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('smp-mts');
+Route::get('/sd-mi', [PostController::class, 'sd'])
+    ->name('sd-mi');
 
-// ==============================================================
-Route::get('/sma-smk', function () {
-    return Inertia::render('kategori/sma', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('sma-smk');
+Route::get('/smp-mts', [PostController::class, 'smp'])
+    ->name('smp-mts');
 
-// ==============================================================
-Route::get('/umum', function () {
-    return Inertia::render('kategori/umum', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('umum');
+Route::get('/sma-smk', [PostController::class, 'sma'])
+    ->name('sma-smk');
+
+Route::get('/umum', [PostController::class, 'umum'])
+    ->name('umum');
+
+
 // ==============================================================
 // Detail Cerkak
 // ==============================================================
-Route::get('/blog/{slug}', function () {
-    return Inertia::render('detail-cerkak', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('detail-cerkak');
+Route::get('/cerkak/{slug}', [BlogController::class, 'show'])
+    ->name('cerkak.show');
+Route::post('/comment', [CommentController::class, 'store']);
 
 
 
 
-
-
-// Authenticated and verified routes
-
+// Create Post
 Route::middleware('auth')->group(function () {
-    Route::get('/post/create', [PostController::class, 'create']);
-    Route::post('/post', [PostController::class, 'store']);
+    Route::get('/post/create', [PostController::class, 'create'])
+        ->name('post.create');
+
+    Route::post('/post', [PostController::class, 'store'])
+        ->name('post.store');
+
+    Route::get('/kategori/{category}', [PostController::class, 'byCategory']);
+    Route::get('/kategori/{category}', [PostController::class, 'show']);
 });
+
+
 // ==============================================================
-// Fortify Auth Views
+// Auth Login/Register
 // ==============================================================
 Fortify::registerView(fn() => Inertia::render('auth/register'));
 Fortify::loginView(fn() => Inertia::render('auth/login'));
 
 
-require __DIR__.'/settings.php';
+// Dashboard Guru
+Route::middleware(['auth'])->prefix('guru')->group(function () {
+
+    Route::get('/dashboard', [\App\Http\Controllers\GuruDashboardController::class, 'index'])
+        ->name('guru.dashboard');
+
+    Route::get('/cerita/{category}', [\App\Http\Controllers\GuruDashboardController::class, 'category'])
+        ->name('guru.category');
+
+    Route::get('/upload', [\App\Http\Controllers\GuruDashboardController::class, 'create'])
+        ->name('guru.upload');
+});
+
+
+require __DIR__ . '/settings.php';
