@@ -7,115 +7,92 @@ use App\Http\Controllers\PostController;
 use Laravel\Fortify\Fortify;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\GuruDashboardController;
 
 
-
-// Route Public
-Route::get('/', function () {
-    return Inertia::render('welcome', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('home');
-// ==============================================================
-Route::get('/materi', function () {
-    return Inertia::render('materi', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('materi');
-// ==============================================================
-Route::get('/cerita-lucu', function () {
-    return Inertia::render('cerita-lucu', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('cerita-lucu');
-// ==============================================================
-Route::get('/cerita-misteri', function () {
-    return Inertia::render('cerita-misteri', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('cerita-misteri');
-// ==============================================================
-Route::get('/cerita-cinta', function () {
-    return Inertia::render('cerita-cinta', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('cerita-cinta');
-// ==============================================================
-Route::get('/cerita-anak', function () {
-    return Inertia::render('cerita-anak', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('cerita-anak');
-// ==============================================================
-Route::get('/cerita-kehidupan', function () {
-    return Inertia::render('cerita-kehidupan', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('cerita-kehidupan');
-// ==============================================================
-Route::get('/cerita-misteri', function () {
-    return Inertia::render('cerita-misteri', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('cerita-misteri');
-// ==============================================================
-// Katgori
-// ==============================================================
-Route::get('/sd-mi', [PostController::class, 'sd'])
-    ->name('sd-mi');
-
-Route::get('/smp-mts', [PostController::class, 'smp'])
-    ->name('smp-mts');
-
-Route::get('/sma-smk', [PostController::class, 'sma'])
-    ->name('sma-smk');
-
-Route::get('/umum', [PostController::class, 'umum'])
-    ->name('umum');
+// Public Routes
+Route::get('/', fn() => Inertia::render('welcome'))->name('home');
+Route::get('/materi', fn() => Inertia::render('materi'))->name('materi');
+Route::get('/tentang', fn() => Inertia::render('tentang'))->name('tentang');
+Route::get('/cerita-lucu', [PostController::class, 'ceritaLucu'])
+    ->name('cerita-lucu');
+Route::get('/cerita-misteri', [PostController::class, 'ceritaMisteri'])
+    ->name('cerita-misteri');
+Route::get('/cerita-cinta', [PostController::class, 'ceritaCinta'])
+    ->name('cerita-cinta');
+Route::get('/cerita-anak', [PostController::class, 'ceritaAnak'])
+    ->name('cerita-anak');
+Route::get('/cerita-kehidupan', [PostController::class, 'ceritaKehidupan'])
+    ->name('cerita-kehidupan');
 
 
-// ==============================================================
+// Siswa Public / Kategori
+Route::get('/sd-mi', [PostController::class, 'sd'])->name('sd-mi');
+Route::get('/smp-mts', [PostController::class, 'smp'])->name('smp-mts');
+Route::get('/sma-smk', [PostController::class, 'sma'])->name('sma-smk');
+Route::get('/umum', [PostController::class, 'umum'])->name('umum');
+
 // Detail Cerkak
-// ==============================================================
-Route::get('/cerkak/{slug}', [BlogController::class, 'show'])
-    ->name('cerkak.show');
-Route::post('/comment', [CommentController::class, 'store']);
+Route::get('/cerkak/{slug}', [BlogController::class, 'show'])->name('cerkak.show');
+Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
 
-
-
-
-// Create Post
+// Protected Routes (Siswa / Auth)
 Route::middleware('auth')->group(function () {
-    Route::get('/post/create', [PostController::class, 'create'])
-        ->name('post.create');
-
-    Route::post('/post', [PostController::class, 'store'])
-        ->name('post.store');
-
-    Route::get('/kategori/{category}', [PostController::class, 'byCategory']);
-    Route::get('/kategori/{category}', [PostController::class, 'show']);
+    Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
+    Route::post('/post', [PostController::class, 'store'])->name('post.store');
+    Route::get('/kategori/{category}', [PostController::class, 'show'])->name('kategori.show');
 });
 
-
-// ==============================================================
-// Auth Login/Register
-// ==============================================================
-Fortify::registerView(fn() => Inertia::render('auth/register'));
-Fortify::loginView(fn() => Inertia::render('auth/login'));
-
-
+// =====================================================
 // Dashboard Guru
-Route::middleware(['auth'])->prefix('guru')->group(function () {
+// =====================================================
+Route::prefix('guru')->name('guru.')->group(function () {
+    // =======================
+    // DASHBOARD
+    // =======================
+    Route::get('/dashboard', [GuruDashboardController::class, 'index'])
+        ->name('dashboard');
+    // =======================
+    // HALAMAN CERITA (GET)
+    // =======================
+    Route::get('/cerita-lucu', [GuruDashboardController::class, 'CeritaLucu'])
+        ->name('cerita-lucu');
 
-    Route::get('/dashboard', [\App\Http\Controllers\GuruDashboardController::class, 'index'])
-        ->name('guru.dashboard');
+    Route::get('/cerita-misteri', [GuruDashboardController::class, 'CeritaMisteri'])
+        ->name('cerita-misteri');
 
-    Route::get('/cerita/{category}', [\App\Http\Controllers\GuruDashboardController::class, 'category'])
-        ->name('guru.category');
+    Route::get('/cerita-cinta', [GuruDashboardController::class, 'CeritaCinta'])
+        ->name('cerita-cinta');
 
-    Route::get('/upload', [\App\Http\Controllers\GuruDashboardController::class, 'create'])
-        ->name('guru.upload');
+    Route::get('/cerita-anak', [GuruDashboardController::class, 'CeritaAnak'])
+        ->name('cerita-anak');
+
+    Route::get('/cerita-kehidupan', [GuruDashboardController::class, 'CeritaKehidupan'])
+        ->name('cerita-kehidupan');
+
+    // =======================
+    // AKSI DATA (POST / DELETE)
+    // =======================
+
+    // SIMPAN DATA (form tambah)
+    Route::post('/kategori', [GuruDashboardController::class, 'store'])
+        ->name('kategori.store');
+
+    // HAPUS DATA
+    Route::delete('/kategori/{id}', [GuruDashboardController::class, 'destroy'])
+        ->name('kategori.destroy');
+
+    // =======================
+    // HALAMAN KATEGORI JENJANG
+    // =======================
+    Route::prefix('kategori')->name('kategori.')->group(function () {
+        Route::get('/sd', [GuruDashboardController::class, 'SD'])->name('sd');
+        Route::get('/smp', [GuruDashboardController::class, 'SMP'])->name('smp');
+        Route::get('/sma', [GuruDashboardController::class, 'SMA'])->name('sma');
+        Route::get('/umum', [GuruDashboardController::class, 'Umum'])->name('umum');
+    });
 });
+
 
 
 require __DIR__ . '/settings.php';

@@ -18,4 +18,6 @@ class BlogController extends Controller
             'post' => $post,
         ]);
     }
+
+    
 }

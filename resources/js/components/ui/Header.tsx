@@ -1,39 +1,32 @@
 import { Link, router, usePage } from '@inertiajs/react';
-import { useState } from 'react';
 
 export default function Header() {
     const page = usePage();
-    const auth = (page.props as any).auth ?? null; // gunakan safe access
-    const [search, setSearch] = useState('');
+    const auth = (page.props as any).auth ?? null;
 
-    function submitSearch(e: React.FormEvent) {
-        e.preventDefault();
-        router.get(
-            '/',
-            { search },
-            { preserveState: true, replace: true }
-        );
+
+    const { url } = usePage();
+
+    function isActive(path: string) {
+        return url === path || url.startsWith(path + '/');
     }
+
+    function navClass(path: string) {
+        return isActive(path)
+            ? 'text-red-600 font-semibold border-b-2 border-red-600 pb-1'
+            : 'text-gray-600 hover:text-red-600';
+    }
+
 
     return (
         <div className="sticky top-0 z-50">
             {/* Header 1 */}
             <header className="h-16 bg-white flex items-center justify-around px-6">
                 <a href="/">
-                    <h1 className="text-xl font-bold">Cerkak Bu Dyah</h1>
+                    <h1 className="text-xl text-red-600 font-bold">E-Sastra Cerkak</h1>
                 </a>
 
                 <nav className="flex gap-4 items-center">
-                    {/* Input Search */}
-                    <form onSubmit={submitSearch}>
-                        <input
-                            type="text"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Cari artikel..."
-                            className="px-3 py-1 border border-gray-300 rounded-sm focus:outline-none focus:ring-1 focus:ring-red-600"
-                        />
-                    </form>
 
                     {auth?.user ? (
                         <>
@@ -73,17 +66,41 @@ export default function Header() {
             {/* Header 2 */}
             <header className="h-16 bg-white border-b flex items-center justify-around px-6">
                 <nav className="flex gap-12">
-                    <Link href="/" className="text-gray-600 hover:text-black">Home</Link>
-                    <Link href="/materi" className="text-gray-600 hover:text-red-600">Materi</Link>
-                    <Link href="/cerita-lucu" className="text-gray-600 hover:text-red-600">Cerita Lucu</Link>
-                    <Link href="/cerita-misteri" className="text-gray-600 hover:text-red-600">Cerita Misteri</Link>
-                    <Link href="/cerita-cinta" className="text-gray-600 hover:text-red-600">Cerita Cinta</Link>
-                    <Link href="/cerita-anak" className="text-gray-600 hover:text-red-600">Cerita Anak</Link>
-                    <Link href="/cerita-kehidupan" className="text-gray-600 hover:text-red-600">Cerita Kehidupan</Link>
+                    <Link href="/" className={navClass('/')}>Home</Link>
 
+                    <Link href="/materi" className={navClass('/materi')}>Materi</Link>
+
+                    <Link href="/cerita-lucu" className={navClass('/cerita-lucu')}>
+                        Cerita Lucu
+                    </Link>
+
+                    <Link href="/cerita-misteri" className={navClass('/cerita-misteri')}>
+                        Cerita Misteri
+                    </Link>
+
+                    <Link href="/cerita-cinta" className={navClass('/cerita-cinta')}>
+                        Cerita Cinta
+                    </Link>
+
+                    <Link href="/cerita-anak" className={navClass('/cerita-anak')}>
+                        Cerita Anak
+                    </Link>
+
+                    <Link href="/cerita-kehidupan" className={navClass('/cerita-kehidupan')}>
+                        Cerita Kehidupan
+                    </Link>
+
+                    {/* Dropdown */}
                     <div className="relative group">
-                        {/* Trigger */}
-                        <span className="cursor-pointer text-gray-600 hover:text-red-600 flex items-center gap-1">
+                        <span
+                            className={`cursor-pointer flex items-center gap-1 ${isActive('/sd-mi') ||
+                                isActive('/smp-mts') ||
+                                isActive('/sma-smk') ||
+                                isActive('/umum')
+                                ? 'text-red-600 font-semibold'
+                                : 'text-gray-600 hover:text-red-600'
+                                }`}
+                        >
                             Kategori
                             <svg
                                 className="w-4 h-4 transition-transform group-hover:rotate-180"
@@ -95,18 +112,28 @@ export default function Header() {
                             </svg>
                         </span>
 
-                        {/* Dropdown */}
-                        <div
-                            className="absolute left-0 mt-2 w-48 bg-white border rounded-md shadow-lg
-                           opacity-0 invisible group-hover:opacity-100 group-hover:visible
-                           transition-all duration-200 z-50"
+                        <div className="absolute left-0 mt-2 w-48 bg-white border rounded-md shadow-lg
+                opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                transition-all duration-200 z-50"
                         >
-                            <Link href="/sd-mi" className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600">SD/MI</Link>
-                            <Link href="/smp-mts" className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600">SMP/MTS</Link>
-                            <Link href="/sma-smk" className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600">SMA/SMK</Link>
-                            <Link href="/umum" className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600">Umum</Link>
+                            <Link href="/sd-mi" className={navClass('/sd-mi') + ' block px-4 py-2 text-sm'}>
+                                SD/MI
+                            </Link>
+                            <Link href="/smp-mts" className={navClass('/smp-mts') + ' block px-4 py-2 text-sm'}>
+                                SMP/MTS
+                            </Link>
+                            <Link href="/sma-smk" className={navClass('/sma-smk') + ' block px-4 py-2 text-sm'}>
+                                SMA/SMK
+                            </Link>
+                            <Link href="/umum" className={navClass('/umum') + ' block px-4 py-2 text-sm'}>
+                                Umum
+                            </Link>
                         </div>
                     </div>
+
+                    <Link href="/tentang" className={navClass('/tentang')}>
+                        Tentang
+                    </Link>
                 </nav>
             </header>
         </div>

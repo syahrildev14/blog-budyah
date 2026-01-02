@@ -10,6 +10,64 @@ use Laravel\Fortify\Features;
 
 class PostController extends Controller
 {
+
+    public function ceritaLucu()
+    {
+        $posts = Post::where('category', 'CERITA_LUCU')
+            ->latest()
+            ->get();
+
+        return Inertia::render('cerita-lucu', [
+            'posts' => $posts
+        ]);
+    }
+
+    public function ceritaMisteri()
+    {
+        $posts = Post::where('category', 'CERITA_MISTERI')
+            ->latest()
+            ->get();
+
+        return Inertia::render('cerita-misteri', [
+            'posts' => $posts
+        ]);
+    }
+
+    public function ceritaCinta()
+    {
+        $posts = Post::where('category', 'CERITA_CINTA')
+            ->latest()
+            ->get();
+
+        return Inertia::render('cerita-cinta', [
+            'posts' => $posts
+        ]);
+    }
+
+    public function ceritaAnak()
+    {
+        $posts = Post::where('category', 'CERITA_ANAK')
+            ->latest()
+            ->get();
+
+        return Inertia::render('cerita-anak', [
+            'posts' => $posts
+        ]);
+    }
+
+    public function ceritaKehidupan()
+    {
+        $posts = Post::where('category', 'CERITA_KEHIDUPAN')
+            ->latest()
+            ->get();
+
+        return Inertia::render('cerita-kehidupan', [
+            'posts' => $posts
+        ]);
+    }
+
+
+
     public function create()
     {
         return Inertia::render('post/create');

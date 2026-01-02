@@ -20,6 +20,7 @@ export default function SD({ posts }: SDProps) {
             <Head title="SD/MTS" />
 
             <section className="space-y-8">
+                <h1 className='font-bold text-3xl text-gray-800'>Kategori SD/MI</h1>
                 {posts.map((post) => (
                     <Link
                         key={post.id}

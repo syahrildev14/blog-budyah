@@ -1,45 +1,63 @@
-import { Head } from '@inertiajs/react';
-import { Link } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
+import { Head, Link } from '@inertiajs/react'
+import AppLayout from '@/layouts/app-layout'
 
-export default function CeritaCinta() {
+interface Post {
+    id: number
+    title: string
+    slug: string
+    content: string
+    thumbnail: string
+    created_at: string
+}
+
+interface CeritaCintaProps {
+    posts?: Post[]
+}
+
+export default function CeritaCinta({ posts = [] }: CeritaCintaProps) {
+    console.log(posts);
+
     return (
         <>
             <Head title="Cerita Cinta" />
 
-            <section className="bg-white rounded-md p-6">
-                <h2 className="text-3xl font-semibold mb-6">Cerita Cinta</h2>
+            <section className="space-y-8">
+                <h1 className='font-bold text-3xl text-gray-800'>Cerita Cinta</h1>
+                {posts.map((post) => (
+                    <Link
+                        key={post.id}
+                        href={`/cerkak/${post.slug}`}
+                        className="grid grid-cols-12 gap-6 group"
+                    >
+                        <img
+                            src={`/storage/${post.thumbnail}`}
+                            alt={post.title}
+                            className="col-span-4 h-40 w-full object-cover rounded-md"
+                        />
 
-                <div className="space-y-6">
-                    {/* ===== List Top 10 Posts ===== */}
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-                        <Link
-                            key={item}
-                            href="#"
-                            className="group flex w-full gap-5"
-                        >
-                            <img
-                                src="https://picsum.photos/160/160"
-                                alt="post"
-                                className="w-72 h-42 object-cover rounded-md flex-shrink-0"
-                            />
+                        <div className="col-span-8">
+                            {/* Tanggal Upload */}
+                            <span className="text-sm text-gray-500">
+                                {new Date(post.created_at).toLocaleDateString('id-ID', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                })}
+                            </span>
 
-                            <div className="flex flex-col">
-                                <h4 className="font-semibold text-2xl leading-snug group-hover:text-red-600 transition">
-                                    Judul artikel populer versi list ke bawah
-                                </h4>
-                                <p className='text-justify leading-relaxed'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, totam. Eius harum natus aperiam cumque magnam officia nesciunt placeat quam accusamus, sit id exercitationem assumenda reprehenderit laboriosam perferendis provident quo?</p>
-                                <span className="text-sm text-gray-500 mt-1">
-                                    3 jam lalu
-                                </span>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+                            <h4 className="text-2xl font-semibold mt-1 group-hover:text-red-600 transition">
+                                {post.title}
+                            </h4>
 
+                            <p className="line-clamp-3 mt-2 text-gray-700">
+                                {post.content}
+                            </p>
+                        </div>
+                    </Link>
+                ))}
             </section>
         </>
-    );
+    )
 }
 
-CeritaCinta.layout = (page: any) => <AppLayout>{page}</AppLayout>;
+CeritaCinta.layout = (page: React.ReactNode) => <AppLayout>{page}</AppLayout>

@@ -20,6 +20,7 @@ export default function SMA({ posts }: SMAProps) {
             <Head title="SMA/MTS" />
 
             <section className="space-y-8">
+                <h1 className='font-bold text-3xl text-gray-800'>Kategori SMA/SMK/MA</h1>
                 {posts.map((post) => (
                     <Link
                         key={post.id}

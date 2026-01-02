@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {
     FaFacebookF,
     FaTwitter,
@@ -8,7 +8,29 @@ import {
 } from 'react-icons/fa';
 import { ReactNode } from 'react';
 
+/* ================= Types ================= */
+
+interface NewsPost {
+    id: number;
+    title: string;
+    slug: string;
+    thumbnail: string;
+    created_at: string;
+}
+
+interface SocialItemProps {
+    label: string;
+    icon: ReactNode;
+    bg: string;
+}
+
+/* ================= Component ================= */
+
 export default function Aside() {
+    const { newsPosts = [] } = usePage().props as {
+        newsPosts?: NewsPost[];
+    };
+
     return (
         <aside className="w-72 space-y-6 sticky top-36 self-start">
             {/* ================= Follow Us ================= */}
@@ -29,26 +51,44 @@ export default function Aside() {
                 <h3 className="font-semibold mb-4">News Feed</h3>
 
                 <div className="space-y-4">
-                    <NewsItem />
-                    <NewsItem />
-                    <NewsItem />
-                    <NewsItem />
-                    <NewsItem />
+                    {newsPosts.length > 0 ? (
+                        newsPosts.map((post) => (
+                            <Link
+                                key={post.id}
+                                href={`/cerkak/${post.slug}`}
+                                className="flex gap-3 group"
+                            >
+                                <img
+                                    src={`/storage/${post.thumbnail}`}
+                                    alt={post.title}
+                                    className="w-16 h-16 object-cover rounded"
+                                />
+
+                                <div>
+                                    <p className="text-sm font-medium group-hover:text-red-600 transition line-clamp-2">
+                                        {post.title}
+                                    </p>
+
+                                    <span className="text-xs text-gray-500">
+                                        {new Date(post.created_at).toLocaleDateString('id-ID', {
+                                            day: 'numeric',
+                                            month: 'short',
+                                            year: 'numeric',
+                                        })}
+                                    </span>
+                                </div>
+                            </Link>
+                        ))
+                    ) : (
+                        <p className="text-sm text-gray-500">Belum ada berita</p>
+                    )}
                 </div>
             </div>
         </aside>
     );
 }
 
-/* ================= Types ================= */
-
-interface SocialItemProps {
-    label: string;
-    icon: ReactNode;
-    bg: string;
-}
-
-/* ================= Components ================= */
+/* ================= Sub Component ================= */
 
 function SocialItem({ label, icon, bg }: SocialItemProps) {
     return (
@@ -60,23 +100,5 @@ function SocialItem({ label, icon, bg }: SocialItemProps) {
             <span className="text-lg">{icon}</span>
             <span className="font-medium">{label}</span>
         </a>
-    );
-}
-
-function NewsItem() {
-    return (
-        <Link href="#" className="flex gap-3 group">
-            <img
-                src="https://picsum.photos/80/80"
-                alt="news"
-                className="w-16 h-16 object-cover rounded"
-            />
-            <div>
-                <p className="text-sm font-medium group-hover:text-red-600 transition">
-                    Contoh judul berita singkat
-                </p>
-                <span className="text-xs text-gray-500">2 hours ago</span>
-            </div>
-        </Link>
     );
 }
