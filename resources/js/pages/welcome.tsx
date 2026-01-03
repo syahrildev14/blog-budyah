@@ -37,10 +37,10 @@ export default function Home() {
             <section className="bg-white">
                 <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                     {/* Left Content */}
-                    <div>
-                        <h1 className="text-4xl md:text-4xl font-semibold leading-tight mb-6">
+                    <div className="text-center md:text-left">
+                        <h1 className="text-3xl md:text-4xl font-semibold leading-tight mb-6">
                             Selamat Datang di <br />
-                            <span className="text-red-600 font-bold text-5xl">E-Sastra Cerkak</span>
+                            <span className="text-red-600 font-bold text-6xl md:text-5xl">E-Sastra Cerkak</span>
                         </h1>
 
                         <p className="text-gray-600 text-lg italic mb-8 max-w-lg">
@@ -60,7 +60,7 @@ export default function Home() {
                     </div>
 
                     {/* Right Image */}
-                    <div className="hidden md:grid grid-cols-2 gap-4 justify-center">
+                    <div className="space-y-4 md:space-y-0 md:grid grid-cols-2 gap-4 justify-center">
                         <img
                             src={ImgHero1}
                             alt="Hero 1"

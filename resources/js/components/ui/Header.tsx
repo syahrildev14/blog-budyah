@@ -1,11 +1,14 @@
 import { Link, router, usePage } from '@inertiajs/react';
+import { Menu, X, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Header() {
     const page = usePage();
     const auth = (page.props as any).auth ?? null;
-
-
     const { url } = usePage();
+
+    const [open, setOpen] = useState(false);
+    const [openKategori, setOpenKategori] = useState(false);
 
     function isActive(path: string) {
         return url === path || url.startsWith(path + '/');
@@ -17,125 +20,197 @@ export default function Header() {
             : 'text-gray-600 hover:text-red-600';
     }
 
-
     return (
-        <div className="sticky top-0 z-50">
-            {/* Header 1 */}
-            <header className="h-16 bg-white flex items-center justify-around px-6">
-                <a href="/">
-                    <h1 className="text-xl text-red-600 font-bold">E-Sastra Cerkak</h1>
-                </a>
+        <div className="sticky top-0 z-50 bg-white border-b">
+            {/* HEADER UTAMA */}
+            <header className="h-16 flex items-center justify-between md:justify-around px-4 md:px-6">
+                <Link href="/">
+                    <h1 className="text-lg md:text-xl text-red-600 font-bold">
+                        E-Sastra Cerkak
+                    </h1>
+                </Link>
 
-                <nav className="flex gap-4 items-center">
-
+                {/* DESKTOP AUTH */}
+                <nav className="hidden md:flex gap-4 items-center">
                     {auth?.user ? (
                         <>
-                            {/* Jika sudah login, tampilkan tombol Post */}
                             <button
                                 onClick={() => router.get('/post/create')}
-                                className="hover:text-red-600 bg-red-600 hover:bg-red-600/0 text-white border border-red-600 px-3 py-1 rounded-sm duration-300"
+                                className="bg-red-600 text-white border border-red-600 px-3 py-1 rounded-sm hover:bg-transparent hover:text-red-600 duration-300"
                             >
                                 Post
                             </button>
-
-                            {/* Tombol Logout */}
                             <button
                                 onClick={() =>
                                     router.post('/logout', {}, {
                                         onSuccess: () => router.visit('/login'),
                                     })
                                 }
-                                className="hover:text-gray-800 bg-gray-200 hover:bg-gray-300 text-gray-800 border border-gray-300 px-3 py-1 rounded-sm duration-300"
+                                className="bg-gray-200 border px-3 py-1 rounded-sm hover:bg-gray-300"
                             >
                                 Logout
                             </button>
                         </>
                     ) : (
-                        // Jika belum login, tampilkan tombol Masuk
                         <Link
                             href="/login"
-                            className="hover:text-red-600 bg-red-600 hover:bg-red-600/0 text-white border border-red-600 px-3 py-1 rounded-sm duration-300"
+                            className="bg-red-600 text-white border border-red-600 px-3 py-1 rounded-sm hover:bg-transparent hover:text-red-600 duration-300"
                         >
                             Masuk
                         </Link>
                     )}
                 </nav>
+
+                {/* BURGER MOBILE */}
+                <button
+                    onClick={() => setOpen(!open)}
+                    className="md:hidden p-2 rounded-md hover:bg-gray-100 transition"
+                    aria-label="Toggle Menu"
+                >
+                    {open ? <X size={24} /> : <Menu size={24} />}
+                </button>
             </header>
 
+            {/* NAV DESKTOP */}
+            <nav className="hidden md:flex justify-center gap-10 h-16 items-center">
+                <Link href="/" className={navClass('/')}>Home</Link>
+                <Link href="/materi" className={navClass('/materi')}>Materi</Link>
+                <Link href="/cerita-lucu" className={navClass('/cerita-lucu')}>Cerita Lucu</Link>
+                <Link href="/cerita-misteri" className={navClass('/cerita-misteri')}>Cerita Misteri</Link>
+                <Link href="/cerita-cinta" className={navClass('/cerita-cinta')}>Cerita Cinta</Link>
+                <Link href="/cerita-anak" className={navClass('/cerita-anak')}>Cerita Anak</Link>
+                <Link href="/cerita-kehidupan" className={navClass('/cerita-kehidupan')}>Cerita Kehidupan</Link>
 
-            {/* Header 2 */}
-            <header className="h-16 bg-white border-b flex items-center justify-around px-6">
-                <nav className="flex gap-12">
-                    <Link href="/" className={navClass('/')}>Home</Link>
-
-                    <Link href="/materi" className={navClass('/materi')}>Materi</Link>
-
-                    <Link href="/cerita-lucu" className={navClass('/cerita-lucu')}>
-                        Cerita Lucu
-                    </Link>
-
-                    <Link href="/cerita-misteri" className={navClass('/cerita-misteri')}>
-                        Cerita Misteri
-                    </Link>
-
-                    <Link href="/cerita-cinta" className={navClass('/cerita-cinta')}>
-                        Cerita Cinta
-                    </Link>
-
-                    <Link href="/cerita-anak" className={navClass('/cerita-anak')}>
-                        Cerita Anak
-                    </Link>
-
-                    <Link href="/cerita-kehidupan" className={navClass('/cerita-kehidupan')}>
-                        Cerita Kehidupan
-                    </Link>
-
-                    {/* Dropdown */}
-                    <div className="relative group">
-                        <span
-                            className={`cursor-pointer flex items-center gap-1 ${isActive('/sd-mi') ||
-                                isActive('/smp-mts') ||
-                                isActive('/sma-smk') ||
-                                isActive('/umum')
-                                ? 'text-red-600 font-semibold'
-                                : 'text-gray-600 hover:text-red-600'
-                                }`}
-                        >
-                            Kategori
-                            <svg
-                                className="w-4 h-4 transition-transform group-hover:rotate-180"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </span>
-
-                        <div className="absolute left-0 mt-2 w-48 bg-white border rounded-md shadow-lg
-                opacity-0 invisible group-hover:opacity-100 group-hover:visible
-                transition-all duration-200 z-50"
-                        >
-                            <Link href="/sd-mi" className={navClass('/sd-mi') + ' block px-4 py-2 text-sm'}>
-                                SD/MI
-                            </Link>
-                            <Link href="/smp-mts" className={navClass('/smp-mts') + ' block px-4 py-2 text-sm'}>
-                                SMP/MTS
-                            </Link>
-                            <Link href="/sma-smk" className={navClass('/sma-smk') + ' block px-4 py-2 text-sm'}>
-                                SMA/SMK
-                            </Link>
-                            <Link href="/umum" className={navClass('/umum') + ' block px-4 py-2 text-sm'}>
-                                Umum
-                            </Link>
-                        </div>
+                {/* Dropdown Desktop */}
+                <div className="relative group">
+                    <span className="cursor-pointer flex items-center gap-1 text-gray-600 hover:text-red-600">
+                        Kategori
+                        <ChevronDown className="w-4 h-4 transition group-hover:rotate-180" />
+                    </span>
+                    <div className="absolute left-0 mt-2 w-44 bg-white border rounded shadow
+                        opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
+                        <Link href="/sd-mi" className="block px-4 py-2 hover:bg-gray-100">SD/MI</Link>
+                        <Link href="/smp-mts" className="block px-4 py-2 hover:bg-gray-100">SMP/MTS</Link>
+                        <Link href="/sma-smk" className="block px-4 py-2 hover:bg-gray-100">SMA/SMK</Link>
+                        <Link href="/umum" className="block px-4 py-2 hover:bg-gray-100">Umum</Link>
                     </div>
+                </div>
 
-                    <Link href="/tentang" className={navClass('/tentang')}>
-                        Tentang
-                    </Link>
-                </nav>
-            </header>
+                <Link href="/tentang" className={navClass('/tentang')}>Tentang</Link>
+            </nav>
+
+            {/* MENU MOBILE */}
+            {open && (
+    <div className="md:hidden border-t bg-white px-4 py-4 space-y-1">
+        {/* MENU UTAMA */}
+        {[
+            ['/', 'Home'],
+            ['/materi', 'Materi'],
+            ['/cerita-lucu', 'Cerita Lucu'],
+            ['/cerita-misteri', 'Cerita Misteri'],
+            ['/cerita-cinta', 'Cerita Cinta'],
+            ['/cerita-anak', 'Cerita Anak'],
+            ['/cerita-kehidupan', 'Cerita Kehidupan'],
+        ].map(([href, label]) => (
+            <Link
+                key={href}
+                href={href}
+                onClick={() => setOpen(false)}
+                className="block rounded-md px-3 py-2 text-gray-700
+                           hover:bg-red-50 hover:text-red-600 transition"
+            >
+                {label}
+            </Link>
+        ))}
+
+        {/* KATEGORI */}
+        <div className="pt-2">
+            <button
+                onClick={() => setOpenKategori(!openKategori)}
+                className="flex w-full items-center justify-between
+                           rounded-md px-3 py-2 font-semibold text-gray-700
+                           hover:bg-gray-100 transition"
+            >
+                <span>Kategori</span>
+                <ChevronDown
+                    className={`w-4 h-4 transition-transform ${
+                        openKategori ? 'rotate-180' : ''
+                    }`}
+                />
+            </button>
+
+            {openKategori && (
+                <div className="mt-1 ml-2 border-l pl-3 space-y-1">
+                    {[
+                        ['/sd-mi', 'SD / MI'],
+                        ['/smp-mts', 'SMP / MTS'],
+                        ['/sma-smk', 'SMA / SMK'],
+                        ['/umum', 'Umum'],
+                    ].map(([href, label]) => (
+                        <Link
+                            key={href}
+                            href={href}
+                            onClick={() => setOpen(false)}
+                            className="block rounded-md px-3 py-2 text-sm text-gray-600
+                                       hover:bg-gray-100 hover:text-red-600 transition"
+                        >
+                            {label}
+                        </Link>
+                    ))}
+                </div>
+            )}
+        </div>
+
+        <Link
+            href="/tentang"
+            onClick={() => setOpen(false)}
+            className="block rounded-md px-3 py-2 text-gray-700
+                       hover:bg-red-50 hover:text-red-600 transition"
+        >
+            Tentang
+        </Link>
+
+        <hr className="my-3" />
+
+        {/* AUTH */}
+        {auth?.user ? (
+            <div className="space-y-2">
+                <button
+                    onClick={() => {
+                        setOpen(false);
+                        router.get('/post/create');
+                    }}
+                    className="w-full rounded-md bg-red-600 py-2 text-white
+                               hover:bg-red-700 transition"
+                >
+                    Post
+                </button>
+
+                <button
+                    onClick={() =>
+                        router.post('/logout', {}, {
+                            onSuccess: () => router.visit('/login'),
+                        })
+                    }
+                    className="w-full rounded-md bg-gray-200 py-2
+                               hover:bg-gray-300 transition"
+                >
+                    Logout
+                </button>
+            </div>
+        ) : (
+            <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className="block rounded-md bg-red-600 py-2 text-center text-white
+                           hover:bg-red-700 transition"
+            >
+                Masuk
+            </Link>
+        )}
+    </div>
+)}
+
         </div>
     );
 }

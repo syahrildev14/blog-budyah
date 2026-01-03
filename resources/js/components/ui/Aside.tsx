@@ -32,12 +32,20 @@ export default function Aside() {
     };
 
     return (
-        <aside className="w-72 space-y-6 sticky top-36 self-start">
+        <aside
+            className="
+                w-full md:w-72
+                space-y-6
+                md:sticky md:top-36
+                self-start
+            "
+        >
             {/* ================= Follow Us ================= */}
             <div className="bg-white shadow-sm rounded-md p-4">
                 <h3 className="font-semibold mb-4">Follow Us</h3>
 
-                <div className="space-y-2 text-sm">
+                {/* mobile: grid | desktop: column */}
+                <div className="grid grid-cols-2 gap-2 md:flex md:flex-col text-sm">
                     <SocialItem label="Facebook" icon={<FaFacebookF />} bg="bg-blue-600" />
                     <SocialItem label="Twitter" icon={<FaTwitter />} bg="bg-sky-500" />
                     <SocialItem label="LinkedIn" icon={<FaLinkedinIn />} bg="bg-blue-700" />
@@ -94,11 +102,15 @@ function SocialItem({ label, icon, bg }: SocialItemProps) {
     return (
         <a
             href="#"
-            className={`flex items-center gap-3 px-4 py-2 rounded-md text-white ${bg}
-                        hover:opacity-90 transition`}
+            className={`
+                flex items-center gap-3 px-3 py-2
+                rounded-md text-white ${bg}
+                hover:opacity-90 transition
+                justify-center md:justify-start
+            `}
         >
             <span className="text-lg">{icon}</span>
-            <span className="font-medium">{label}</span>
+            <span className="font-medium text-sm">{label}</span>
         </a>
     );
 }
