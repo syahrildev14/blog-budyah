@@ -9,7 +9,9 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
+use Laravel\Fortify\Contracts\RegisterResponse;
+use App\Actions\Fortify\RegisterResponse as CustomRegisterResponse;
+// use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
@@ -21,10 +23,14 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Override default login response untuk redirect ke "/"
         $this->app->singleton(
             \Laravel\Fortify\Contracts\LoginResponse::class,
             LoginResponse::class
+        );
+
+        $this->app->singleton(
+            RegisterResponse::class,
+            CustomRegisterResponse::class
         );
     }
 
@@ -38,7 +44,6 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureActions();
 
         Fortify::redirects('register', '/');
-        
     }
 
     /**

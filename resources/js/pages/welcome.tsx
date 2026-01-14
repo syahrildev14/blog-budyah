@@ -35,7 +35,7 @@ export default function Home() {
         <div>
             {/* Hero Section */}
             <section className="bg-white">
-                <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div className="max-w-7xl mx-auto py-4 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                     {/* Left Content */}
                     <div className="text-center md:text-left">
                         <h1 className="text-3xl md:text-4xl font-semibold leading-tight mb-6">
@@ -61,27 +61,30 @@ export default function Home() {
 
                     {/* Right Image */}
                     <div className="space-y-4 md:space-y-0 md:grid grid-cols-2 gap-4 justify-center">
-                        <img
-                            src={ImgHero1}
-                            alt="Hero 1"
-                            className="w-full h-40 object-cover rounded-lg shadow-sm"
-                        />
-                        <img
-                            src={ImgHero2}
-                            alt="Hero 2"
-                            className="w-full h-40 object-cover rounded-lg shadow-sm"
-                        />
-                        <img
-                            src={ImgHero3}
-                            alt="Hero 3"
-                            className="w-full h-40 object-cover rounded-lg shadow-sm"
-                        />
-                        <img
-                            src={ImgHero4}
-                            alt="Hero 4"
-                            className="w-full h-40 object-cover rounded-lg shadow-sm"
-                        />
+                        {[
+                            { src: ImgHero1, text: "Crita Cekak, Rasa Jeru" },
+                            { src: ImgHero2, text: "Sakeplasan, nanging Nabet" },
+                            { src: ImgHero3, text: "Cilik Wujude, Jembar Maknane" },
+                            { src: ImgHero4, text: "Sawetara Wektu, Sejuta Rasa" },
+                        ].map((item, idx) => (
+                            <div key={idx} className="relative w-full h-40 rounded-lg overflow-hidden shadow-sm">
+                                <img
+                                    src={item.src}
+                                    alt={item.text}
+                                    className="w-full h-full object-cover"
+                                />
+
+                                {/* Gradient overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                                {/* Text overlay */}
+                                <div className="absolute bottom-2 left-2 text-white drop-shadow-md">
+                                    <p className="italic text-lg md:text-base">{item.text}</p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
+
                 </div>
             </section>
 

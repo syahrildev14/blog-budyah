@@ -10,13 +10,12 @@ use Carbon\Carbon;
 
 class GuruDashboardController extends Controller
 {
-    // Dashboard utama
     public function index()
     {
         $totalPosts = Post::count();
 
         $postsByCategory = Post::select('category')
-            ->selectRaw('count(*) as count')
+            ->selectRaw('COUNT(*) as count')
             ->groupBy('category')
             ->get()
             ->map(fn($item) => [
@@ -24,21 +23,21 @@ class GuruDashboardController extends Controller
                 'count' => $item->count,
             ]);
 
-        // Untuk SQLite, gunakan strftime
-        $postsByMonth = Post::selectRaw("strftime('%m', created_at) as month, COUNT(*) as count")
-            ->groupBy('month')
-            ->orderBy('month')
+        // MySQL / MariaDB (bukan SQLite)
+        $postsByMonth = Post::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->groupByRaw('MONTH(created_at)')
+            ->orderByRaw('MONTH(created_at)')
             ->get()
             ->map(fn($item) => [
-                'month' => Carbon::create()->month(intval($item->month))->format('M'), // Jan, Feb, dst
+                'month' => Carbon::create()->month((int) $item->month)->format('M'),
                 'count' => $item->count,
             ]);
 
         return Inertia::render('guru/dashboard', [
             'stats' => [
-                'totalPosts' => $totalPosts,
-                'postsByCategory' => $postsByCategory,
-                'postsByMonth' => $postsByMonth,
+                'totalPosts'       => $totalPosts,
+                'postsByCategory'  => $postsByCategory,
+                'postsByMonth'     => $postsByMonth,
             ],
         ]);
     }

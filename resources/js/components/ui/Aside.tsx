@@ -1,10 +1,9 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
     FaFacebookF,
-    FaTwitter,
-    FaLinkedinIn,
     FaInstagram,
     FaYoutube,
+    FaWhatsapp,
 } from 'react-icons/fa';
 import { ReactNode } from 'react';
 
@@ -22,6 +21,7 @@ interface SocialItemProps {
     label: string;
     icon: ReactNode;
     bg: string;
+    path: string;
 }
 
 /* ================= Component ================= */
@@ -46,11 +46,10 @@ export default function Aside() {
 
                 {/* mobile: grid | desktop: column */}
                 <div className="grid grid-cols-2 gap-2 md:flex md:flex-col text-sm">
-                    <SocialItem label="Facebook" icon={<FaFacebookF />} bg="bg-blue-600" />
-                    <SocialItem label="Twitter" icon={<FaTwitter />} bg="bg-sky-500" />
-                    <SocialItem label="LinkedIn" icon={<FaLinkedinIn />} bg="bg-blue-700" />
-                    <SocialItem label="Instagram" icon={<FaInstagram />} bg="bg-violet-600" />
-                    <SocialItem label="YouTube" icon={<FaYoutube />} bg="bg-red-500" />
+                    <SocialItem label="Facebook" icon={<FaFacebookF />} path='https://www.facebook.com/dyah.kurniawati.948' bg="bg-blue-600" />
+                    <SocialItem label="Instagram" icon={<FaInstagram />} path='https://www.instagram.com/dyahmarkonah/' bg="bg-violet-600" />
+                    <SocialItem label="YouTube" icon={<FaYoutube />} path='https://www.youtube.com/@dyahkurniawati864' bg="bg-red-500" />
+                    <SocialItem label="Whatsapp" icon={<FaWhatsapp />} path='https://wa.me/6282301278565' bg="bg-green-600" />
                 </div>
             </div>
 
@@ -98,10 +97,10 @@ export default function Aside() {
 
 /* ================= Sub Component ================= */
 
-function SocialItem({ label, icon, bg }: SocialItemProps) {
+function SocialItem({ label, icon, bg, path }: SocialItemProps) {
     return (
         <a
-            href="#"
+            href={path}
             className={`
                 flex items-center gap-3 px-3 py-2
                 rounded-md text-white ${bg}
