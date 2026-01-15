@@ -49,9 +49,10 @@ export default function CeritaCinta({ posts = [] }: CeritaCintaProps) {
                                 {post.title}
                             </h4>
 
-                            <p className="line-clamp-3 mt-2 text-gray-700">
-                                {post.content}
-                            </p>
+                            <div
+                                className="line-clamp-4 mt-2 text-gray-700 overflow-hidden text-justify"
+                                dangerouslySetInnerHTML={{ __html: post.content }}
+                            />
                         </div>
                     </Link>
                 ))}

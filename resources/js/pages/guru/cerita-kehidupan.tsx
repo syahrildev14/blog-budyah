@@ -2,6 +2,28 @@ import { Head, useForm, router } from "@inertiajs/react";
 import AdminLayout from "@/layouts/dashboard/app-layout";
 import Swal from "sweetalert2";
 
+import { Editor } from '@tinymce/tinymce-react'
+import { useRef } from 'react'
+
+// TinyMCE core
+import 'tinymce/tinymce'
+import 'tinymce/icons/default'
+import 'tinymce/themes/silver'
+import 'tinymce/models/dom'
+import 'tinymce/skins/ui/oxide/skin.min.css'
+
+// Plugins
+import 'tinymce/plugins/advlist'
+import 'tinymce/plugins/autolink'
+import 'tinymce/plugins/lists'
+import 'tinymce/plugins/link'
+import 'tinymce/plugins/image'
+import 'tinymce/plugins/media'
+import 'tinymce/plugins/table'
+import 'tinymce/plugins/code'
+import 'tinymce/plugins/quickbars'
+import 'tinymce/plugins/autoresize'
+
 interface Post {
     id: number;
     title: string;
@@ -25,6 +47,8 @@ export default function CeritaKehidupan({ posts }: CeritaKehidupanProps) {
         thumbnail: null,
         category: "CERITA_KEHIDUPAN",
     });
+
+    const editorRef = useRef<any>(null);
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -81,12 +105,53 @@ export default function CeritaKehidupan({ posts }: CeritaKehidupanProps) {
                         required
                     />
 
-                    <textarea
-                        placeholder="Isi cerita"
-                        className="w-full border rounded p-2 h-32"
-                        value={data.content}
-                        onChange={(e) => setData("content", e.target.value)}
-                        required
+                    <Editor
+                        apiKey="" // self-host mode
+                        licenseKey="gpl"
+                        onInit={(_, editor) => (editorRef.current = editor)}
+                        init={{
+                            height: 'auto',
+                            width: '100%',
+                            autoresize_bottom_margin: 16,
+                            menubar: 'edit insert view format',
+                            promotion: false,
+                            branding: false,
+                            skin: 'oxide',
+                            content_css: 'default',
+
+                            plugins:
+                                'advlist autolink lists link image media table code quickbars autoresize'
+                            ,
+                            toolbar:
+                                'undo redo | styles | blocks | bold italic underline | forecolor | alignleft aligncenter alignright | bullist numlist | outdent indent | link image media | removeformat | code',
+                            content_style: `
+                  body {
+                    font-family: Inter, Arial, sans-serif;
+                    font-size: 16px;
+                    color: #111;
+                  }
+                `,
+                            images_upload_url: '/upload-image',
+                            automatic_uploads: true,
+                            images_upload_credentials: true,
+
+                            images_upload_handler: ((blobInfo: any, _progress: any, success: any, failure: any) => {
+                                const formData = new FormData()
+                                formData.append('file', blobInfo.blob())
+
+                                fetch('/upload-image', {
+                                    method: 'POST',
+                                    body: formData,
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                                    },
+                                })
+                                    .then(res => res.json())
+                                    .then(json => success(json.location))
+                                    .catch(() => failure('Upload failed'))
+                            }) as any,
+                        }}
+                        onEditorChange={(content) => setData('content', content)}
                     />
 
                     <input

@@ -17,6 +17,7 @@ interface Post {
     excerpt?: string;
     created_at: string;
     category: string;
+
 }
 
 
@@ -71,7 +72,7 @@ export default function Home() {
                                 <img
                                     src={item.src}
                                     alt={item.text}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-cover shadow-md"
                                 />
 
                                 {/* Gradient overlay */}
@@ -89,7 +90,7 @@ export default function Home() {
             </section>
 
             {/* Popular Post */}
-            <section id="popular" className="bg-white rounded-md p-6">
+            <section id="popular" className="bg-white rounded-md">
                 <h2 className="text-xl font-semibold mb-6">Popular Posts</h2>
 
                 {popularPosts.length === 0 && (
@@ -106,7 +107,7 @@ export default function Home() {
                             <img
                                 src={`/storage/${popularPosts[0].thumbnail}`}
                                 alt={popularPosts[0].title}
-                                className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                                className="w-full h-full object-cover group-hover:scale-105 transition duration-300 shadow-md"
                             />
 
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-4 flex flex-col justify-end">
@@ -135,7 +136,7 @@ export default function Home() {
                             <img
                                 src={`/storage/${post.thumbnail}`}
                                 alt={post.title}
-                                className="w-32 h-24 object-cover rounded-md"
+                                className="md:w-60 md:h-30 w-40 h-25 object-cover rounded-md shadow-md"
                             />
                             <div>
                                 <h3 className="font-medium text-sm group-hover:text-red-600 transition">
@@ -153,12 +154,12 @@ export default function Home() {
                         <Link
                             key={post.id}
                             href={`/cerkak/${post.slug}`}
-                            className="group flex gap-3"
+                            className="group flex gap-5"
                         >
                             <img
                                 src={`/storage/${post.thumbnail}`}
                                 alt={post.title}
-                                className="w-20 h-20 object-cover rounded"
+                                className="md:w-60 md:h-20 w-40 h-25 object-cover rounded shadow-md"
                             />
                             <div>
                                 <h4 className="text-sm font-medium leading-snug group-hover:text-red-600 transition line-clamp-2">
@@ -176,7 +177,7 @@ export default function Home() {
 
             {/* List */}
             {/* List */}
-            <section className="bg-white rounded-md p-6">
+            <section className="bg-white rounded-md mt-10">
                 <h2 className="text-xl font-semibold mb-6">Top Posts</h2>
 
                 {posts.length === 0 && (
@@ -188,12 +189,12 @@ export default function Home() {
                         <Link
                             key={post.id}
                             href={`/cerkak/${post.slug}`}
-                            className="group flex w-full gap-5"
+                            className="group flex w-full gap-3"
                         >
                             <img
                                 src={`/storage/${post.thumbnail}`}
                                 alt={post.title}
-                                className="w-72 h-44 object-cover rounded-md flex-shrink-0"
+                                className="md:w-72 md:h-44 w-40 h-25 object-cover rounded-md flex-shrink-0 shadow-md"
                             />
 
                             <div className="flex flex-col">

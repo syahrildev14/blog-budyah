@@ -54,7 +54,7 @@ export default function Detail({ post }: DetailProps) {
                 <img
                     src={`/storage/${post.thumbnail}`}
                     alt={post.title}
-                    className="w-full h-[400px] object-cover rounded-lg"
+                    className="w-full h-[400px] object-cover rounded-lg shadow-md"
                 />
 
                 <h1 className="text-4xl font-bold">{post.title}</h1>
@@ -67,9 +67,11 @@ export default function Detail({ post }: DetailProps) {
                     })}
                 </p>
 
-                <div className="prose max-w-none">
-                    {post.content}
-                </div>
+                <div
+                    className="prose max-w-none text-justify"
+                    dangerouslySetInnerHTML={{ __html: post.content }}
+                />
+
             </article>
 
             {/* ================= COMMENTS ================= */}

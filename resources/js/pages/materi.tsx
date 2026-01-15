@@ -1,5 +1,6 @@
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
+import DriveButton from '@/components/utils/ButtonGdrive';
 
 export default function Materi() {
     return (
@@ -8,18 +9,19 @@ export default function Materi() {
 
             <section>
                 {/* ================= Header Materi ================= */}
-                <div className="bg-white rounded-md">
-                    <h1 className="text-lg font-bold mb-4 text-white bg-red-600 px-3 py-2 md:max-w-1/3">
+                <div className="bg-white rounded-md md:mb-10">
+                    <h1 className="text-4xl font-bold mb-4 ">
                         Apa Iku Cerkak?
                     </h1>
-                    <p className="text-gray-700 text-justify leading-relaxed italic">
-                        Cerkak (Cerita Cekak) yaiku salah sijine sastra Jawa awujud prosa kang nyritakake cuplikan
-                        panguripan kanthi ringkes, mentes, lan padhet.
-                    </p>
+
                 </div>
 
                 {/* ================= Titikane Cerkak (Ciri-Ciri) ================= */}
-                <h2 className="text-lg font-bold">Unit I: Sinau Makna</h2>
+                <h2 className="text-2xl font-bold  bg-red-600 text-white text-center p-3 mb-3">Unit I: Sinau Makna <br /><span className='italic font-light text-sm'>"Ndhudhuk Makna, Amrih Sampurna"</span></h2>
+                <p className="leading-relaxed font-semibold text-lg text-center italic md:w-1/2 mx-auto text-red-600">
+                    Cerkak (Cerita Cekak) yaiku salah sijine sastra Jawa awujud prosa kang nyritakake cuplikan
+                    panguripan kanthi ringkes, mentes, lan padhet.
+                </p>
                 <article className="bg-white rounded-md  py-2 space-y-4">
                     <h2 className="text-lg font-semibold">
                         1. Wujude Crita
@@ -180,10 +182,7 @@ export default function Materi() {
                         {/* ====================== */}
                         {/* UNIT II: BEDHAH RASA   */}
                         {/* ====================== */}
-
-                        <h2 className="text-lg font-bold">Unit II: Bedhah Rasa (Design)</h2>
-                        <p className="italic">"Ngrancang nyawa, nata prastawa, mbedhah jeroaning karya."</p>
-
+                        <h2 className="text-2xl font-bold  bg-red-600 text-white text-center p-3 mb-3">Unit II: Bedhah Rasa (Design)<br /><span className='italic font-light text-sm'>"Ngrancang nyawa, nata prastawa, mbedhah jeroaning karya"</span></h2>
                         <p>
                             Sadurunge nulis, kita kudu ngerti apa wae “bahan” sing dibutuhake supaya cerkak dadi apik.
                             Bahan kasebut sinebut Unsur Intrinsik lan Unsur Ekstrinsik.
@@ -295,7 +294,7 @@ export default function Materi() {
                             </li>
                         </ul>
 
-                         {/* ============================ */}
+                        {/* ============================ */}
                         {/* Glosarium                    */}
                         {/* ============================ */}
                         <h3 className="font-semibold mt-3">Bausastra / Glosarium Unit II</h3>
@@ -337,10 +336,7 @@ export default function Materi() {
                         {/* ====================== */}
                         {/* UNIT III: NGOLAH BASA  */}
                         {/* ====================== */}
-
-                        <h2 className="text-lg font-bold mt-3">Unit III: Ngolah Basa (Develop)</h2>
-                        <p className="italic">"Mantesi tembung, ngronce ukara, ngidupake crita."</p>
-
+                        <h2 className="text-2xl font-bold  bg-red-600 text-white text-center p-3 mb-3">Unit III: Ngolah Basa (Develop)<br /><span className='italic font-light text-sm'>"Mantesi tembung, ngronce ukara, ngidupake crita"</span></h2>
                         <p>
                             Fokus unit iki yaiku kepiye carane panulis "ngracik" basa supaya crita ora mung dadi laporan
                             kedadeyan, nanging dadi karya sastra sing urip lan nengsemake.
@@ -524,10 +520,7 @@ export default function Materi() {
                         {/* ============================ */}
                         {/* UNIT IV: NGRAKIT CERKAK     */}
                         {/* ============================ */}
-
-                        <h2 className="text-lg font-bold mt-3">Unit IV: Ngrakit Cerkak (Develop)</h2>
-                        <p className="italic">"Nyenyawa raga, mujudake crita."</p>
-
+                        <h2 className="text-2xl font-bold  bg-red-600 text-white text-center p-3 mb-3">Unit IV: Ngrakit Cerkak (Develop)<br /><span className='italic font-light text-sm'>"Nyenyawa raga, mujudake crita"</span></h2>
                         <p>
                             Ngrakit cerkak iku ibarat mbangun omah. Bahan-bahan kaya bata (ide), semen (basa), lan
                             rangka (alur) kudu dipasang kanthi pas supaya dadi wangunan sing santosa lan endah.
@@ -657,10 +650,7 @@ export default function Materi() {
                         {/* ============================ */}
                         {/* UNIT V: MADHANGI KARYA       */}
                         {/* ============================ */}
-
-                        <h2 className="text-lg font-bold mt-3">Unit V: Madhangi Karya (Disseminate)</h2>
-                        <p className="italic">"Mbagi crita, nularake tresna."</p>
-
+                        <h2 className="text-2xl font-bold  bg-red-600 text-white text-center p-3 mb-3">Unit V: Madhangi Karya (Disseminate)<br /><span className='italic font-light text-sm'>"Mbagi crita, nularake tresna"</span></h2>
                         <p>
                             Sawisé crita rampung ditulis lan disunting, langkah sabanjure yaiku madhangi utawa
                             nyebarake karya supaya diwaca wong liya. Iki minangka tahap krusial amarga karya sastra
@@ -679,20 +669,22 @@ export default function Materi() {
                                 jelas, lan enak diwaca.
                             </li>
                             <li>
-                                <span className="font-semibold">Visualisasi:</span> Nambahi ilustrasi utawa desain
-                                visual sing relevan supaya luwih menarik.
+                                <span className="font-semibold">Visualisasi:</span> Nambahi gambar ilustrasi sing jumbuh karo isi crita (umpamane gambar keluk dupa kanggo cerkak) <a href="#" className='font-semibold text-purple-600 hover:underline'>"Keluk Dupa Tengah Wengi"</a>
                             </li>
                         </ul>
-
-                        <p className="mt-1">
-                            Tuladha: Ing cerkak <span className="italic">Keluk Dupa Tengah Wengi</span> bisa ditambah
-                            ilustrasi wewayangan utawa dupa kanggo nguatake swasana.
-                        </p>
-
-                       
                     </div>
-
                 </div>
+
+                {/* Button Gdrive */}
+                <div className='mt-12'>
+                    <DriveButton href="https://drive.google.com/drive/folders/1lp85FzG10n6esHfT-f7CL8qtPOtiTuU2" />
+                </div>
+
+
+                <p className="leading-relaxed font-semibold text-lg text-center italic md:w-1/2 mx-auto text-red-600 mt-12">
+                    🔥💪 SEMANGATTT! 💪🔥 <br />
+                    Gas terus, aja kendho! 🚀😄
+                </p>
             </section>
         </>
     );

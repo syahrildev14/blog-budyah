@@ -146,3 +146,8 @@ html {
     scroll-behavior: smooth;
 }
 
+
+.prose p {
+  text-indent: 2em;
+}
+

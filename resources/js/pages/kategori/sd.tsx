@@ -30,7 +30,7 @@ export default function SD({ posts }: SDProps) {
                         <img
                             src={`/storage/${post.thumbnail}`}
                             alt={post.title}
-                            className="col-span-4 h-40 w-full object-cover rounded-md"
+                            className="col-span-4 h-40 w-full object-cover rounded-md shadow-md"
                         />
 
                         <div className="col-span-8">
@@ -47,9 +47,11 @@ export default function SD({ posts }: SDProps) {
                                 {post.title}
                             </h4>
 
-                            <p className="line-clamp-3 mt-2 text-gray-700">
-                                {post.content}
-                            </p>
+                            <div
+                                className="line-clamp-4 mt-2 text-gray-700 overflow-hidden text-justify"
+                                dangerouslySetInnerHTML={{ __html: post.content }}
+                            />
+
                         </div>
                     </Link>
                 ))}
