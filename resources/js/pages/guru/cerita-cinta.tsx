@@ -3,7 +3,7 @@ import AdminLayout from "@/layouts/dashboard/app-layout";
 import Swal from "sweetalert2";
 
 import { Editor } from '@tinymce/tinymce-react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 // TinyMCE core
 import 'tinymce/tinymce'
@@ -23,10 +23,13 @@ import 'tinymce/plugins/table'
 import 'tinymce/plugins/code'
 import 'tinymce/plugins/quickbars'
 import 'tinymce/plugins/autoresize'
+import { RiDeleteBinFill } from "react-icons/ri";
+import { FaEdit } from "react-icons/fa";
 
 interface Post {
     id: number;
     title: string;
+    content: string;
     thumbnail: string;
     created_at: string;
 }
@@ -53,17 +56,31 @@ export default function CeritaCinta({ posts }: CeritaCintaProps) {
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        post("/guru/kategori", {
-            forceFormData: true,
-            onSuccess: () => {
-                reset();
-                Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
-            },
-            onError: () => {
-                Swal.fire("Gagal", "Gagal menambahkan data", "error");
-            },
-        });
+        if (editingId) {
+            router.post(`/guru/kategori/${editingId}`, {
+                _method: "PUT",
+                ...data,
+            }, {
+                forceFormData: true,
+                onSuccess: () => {
+                    reset();
+                    setEditingId(null);
+                    Swal.fire("Berhasil", "Data berhasil diupdate", "success");
+                },
+                onError: () => Swal.fire("Gagal", "Gagal mengupdate data", "error"),
+            });
+        } else {
+            post("/guru/kategori", {
+                forceFormData: true,
+                onSuccess: () => {
+                    reset();
+                    Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
+                },
+                onError: () => Swal.fire("Gagal", "Gagal menambahkan data", "error"),
+            });
+        }
     };
+
 
 
     const handleDelete = (id: number) => {
@@ -83,6 +100,26 @@ export default function CeritaCinta({ posts }: CeritaCintaProps) {
     };
 
     console.log(posts);
+
+    // Function Edit Data
+    const [editingId, setEditingId] = useState<number | null>(null);
+
+    const handleEdit = (post: Post) => {
+        setData({
+            title: post.title,
+            content: post.content ?? "",
+            thumbnail: null,
+            category: "CERITA_CINTA"
+        });
+
+        // simpan id untuk update
+        setEditingId(post.id);
+
+        // isi editor
+        if (editorRef.current) {
+            editorRef.current.setContent(post.content ?? "");
+        }
+    };
 
 
     return (
@@ -105,52 +142,52 @@ export default function CeritaCinta({ posts }: CeritaCintaProps) {
                         required
                     />
 
-                   <Editor
-                                           apiKey="" // self-host mode
-                                           licenseKey="gpl"
-                                           onInit={(_, editor) => (editorRef.current = editor)}
-                                           init={{
-                                               height: 450,
-                                               menubar: 'edit insert view format',
-                                               promotion: false,
-                                               branding: false,
-                                               skin: 'oxide',
-                                               content_css: 'default',
-                   
-                                               plugins:
-                                                   'advlist autolink lists link image media table code quickbars autoresize'
-                                               ,
-                                               toolbar:
-                                                   'undo redo | styles | blocks | bold italic underline | forecolor | alignleft aligncenter alignright | bullist numlist | outdent indent | link image media | removeformat | code',
-                                               content_style: `
+                    <Editor
+                        apiKey="" // self-host mode
+                        licenseKey="gpl"
+                        onInit={(_, editor) => (editorRef.current = editor)}
+                        init={{
+                            height: 450,
+                            menubar: 'edit insert view format',
+                            promotion: false,
+                            branding: false,
+                            skin: 'oxide',
+                            content_css: 'default',
+
+                            plugins:
+                                'advlist autolink lists link image media table code quickbars autoresize'
+                            ,
+                            toolbar:
+                                'undo redo | styles | blocks | bold italic underline | forecolor | alignleft aligncenter alignright | bullist numlist | outdent indent | link image media | removeformat | code',
+                            content_style: `
                                      body {
                                        font-family: Inter, Arial, sans-serif;
                                        font-size: 16px;
                                        color: #111;
                                      }
                                    `,
-                                               images_upload_url: '/upload-image',
-                                               automatic_uploads: true,
-                                               images_upload_credentials: true,
-                   
-                                               images_upload_handler: ((blobInfo: any, _progress: any, success: any, failure: any) => {
-                                                   const formData = new FormData()
-                                                   formData.append('file', blobInfo.blob())
-                   
-                                                   fetch('/upload-image', {
-                                                       method: 'POST',
-                                                       body: formData,
-                                                       headers: {
-                                                           'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                                                       },
-                                                   })
-                                                       .then(res => res.json())
-                                                       .then(json => success(json.location))
-                                                       .catch(() => failure('Upload failed'))
-                                               }) as any,
-                                           }}
-                                           onEditorChange={(content) => setData('content', content)}
-                                       />
+                            images_upload_url: '/upload-image',
+                            automatic_uploads: true,
+                            images_upload_credentials: true,
+
+                            images_upload_handler: ((blobInfo: any, _progress: any, success: any, failure: any) => {
+                                const formData = new FormData()
+                                formData.append('file', blobInfo.blob())
+
+                                fetch('/upload-image', {
+                                    method: 'POST',
+                                    body: formData,
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                                    },
+                                })
+                                    .then(res => res.json())
+                                    .then(json => success(json.location))
+                                    .catch(() => failure('Upload failed'))
+                            }) as any,
+                        }}
+                        onEditorChange={(content) => setData('content', content)}
+                    />
 
                     <input
                         type="file"
@@ -159,13 +196,13 @@ export default function CeritaCinta({ posts }: CeritaCintaProps) {
                         onChange={(e) =>
                             setData("thumbnail", e.target.files ? e.target.files[0] : null)
                         }
-                        required
+                        required={!editingId}
                     />
 
                     <button
                         type="submit"
                         disabled={processing}
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer duration-200"
                     >
                         {processing ? "Menyimpan..." : "Simpan"}
                     </button>
@@ -195,12 +232,23 @@ export default function CeritaCinta({ posts }: CeritaCintaProps) {
                                     <td className="border px-4 py-2">
                                         {new Date(post.created_at).toLocaleDateString("id-ID")}
                                     </td>
-                                    <td className="border px-4 py-2 text-center">
+                                    <td className="border px-4 py-2 text-center flex items-center justify-center space-x-2">
+                                        {/* Hapus Data */}
                                         <button
                                             onClick={() => handleDelete(post.id)}
-                                            className="bg-red-600 text-white px-3 py-1 rounded"
+                                            className="bg-red-600 hover:bg-red-700 duration-200 text-white px-3 py-2 rounded flex items-center gap-1 cursor-pointer"
                                         >
+                                            <RiDeleteBinFill />
                                             Delete
+                                        </button>
+
+                                        {/* Edit Data */}
+                                        <button
+                                            onClick={() => handleEdit(post)}
+                                            className="bg-yellow-500 hover:bg-yellow-600 duration-200 text-white px-3 py-2 rounded flex items-center gap-1 cursor-pointer"
+                                        >
+                                            <FaEdit />
+                                            Edit
                                         </button>
                                     </td>
                                 </tr>

@@ -84,7 +84,7 @@ export default function Header() {
                 {/* Dropdown Desktop */}
                 <div className="relative group">
                     <span className="cursor-pointer flex items-center gap-1 text-gray-600 hover:text-red-600">
-                        Kategori
+                        Ruang Karya
                         <ChevronDown className="w-4 h-4 transition group-hover:rotate-180" />
                     </span>
                     <div className="absolute left-0 mt-2 w-44 bg-white border rounded shadow
@@ -131,7 +131,7 @@ export default function Header() {
                            rounded-md px-3 py-2 font-semibold text-gray-700
                            hover:bg-gray-100 transition"
             >
-                <span>Kategori</span>
+                <span>Ruang Karya</span>
                 <ChevronDown
                     className={`w-4 h-4 transition-transform ${
                         openKategori ? 'rotate-180' : ''

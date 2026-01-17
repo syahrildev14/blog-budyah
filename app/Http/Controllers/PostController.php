@@ -109,6 +109,33 @@ class PostController extends Controller
         ]);
     }
 
+    public function update(Request $request, $id)
+    {
+        $post = Post::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'thumbnail' => 'nullable|image|max:2048',
+        ]);
+
+        // update field normal
+        $post->title = $validated['title'];
+        $post->content = $validated['content'];
+
+        // update thumbnail kalau ada file baru
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('posts', 'public');
+            $post->thumbnail = $thumbnailPath;
+        }
+
+        $post->save();
+
+        return back()->with('success', 'Data berhasil diupdate');
+    }
+
+
+
 
 
     public function byCategory($category)

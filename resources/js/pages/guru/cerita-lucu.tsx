@@ -1,9 +1,11 @@
 import { Head, useForm, router } from "@inertiajs/react";
 import AdminLayout from "@/layouts/dashboard/app-layout";
 import Swal from "sweetalert2";
+import { RiDeleteBinFill } from "react-icons/ri";
+import { FaEdit } from "react-icons/fa";
 
 import { Editor } from '@tinymce/tinymce-react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 // TinyMCE core
 import 'tinymce/tinymce'
@@ -28,6 +30,7 @@ import 'tinymce/plugins/autoresize'
 interface Post {
     id: number;
     title: string;
+    content: string;
     thumbnail: string;
     created_at: string;
 }
@@ -54,17 +57,31 @@ export default function CeritaLucu({ posts }: CeritaLucuProps) {
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        post("/guru/kategori", {
-            forceFormData: true,
-            onSuccess: () => {
-                reset();
-                Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
-            },
-            onError: () => {
-                Swal.fire("Gagal", "Gagal menambahkan data", "error");
-            },
-        });
+        if (editingId) {
+            router.post(`/guru/kategori/${editingId}`, {
+                _method: "PUT",
+                ...data,
+            }, {
+                forceFormData: true,
+                onSuccess: () => {
+                    reset();
+                    setEditingId(null);
+                    Swal.fire("Berhasil", "Data berhasil diupdate", "success");
+                },
+                onError: () => Swal.fire("Gagal", "Gagal mengupdate data", "error"),
+            });
+        } else {
+            post("/guru/kategori", {
+                forceFormData: true,
+                onSuccess: () => {
+                    reset();
+                    Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
+                },
+                onError: () => Swal.fire("Gagal", "Gagal menambahkan data", "error"),
+            });
+        }
     };
+
 
 
     const handleDelete = (id: number) => {
@@ -84,6 +101,27 @@ export default function CeritaLucu({ posts }: CeritaLucuProps) {
     };
 
     console.log(posts);
+
+    // Function Edit Data
+    const [editingId, setEditingId] = useState<number | null>(null);
+
+    const handleEdit = (post: Post) => {
+        setData({
+            title: post.title,
+            content: post.content ?? "",
+            thumbnail: null,
+            category: "CERITA_LUCU"
+        });
+
+        // simpan id untuk update
+        setEditingId(post.id);
+
+        // isi editor
+        if (editorRef.current) {
+            editorRef.current.setContent(post.content ?? "");
+        }
+    };
+
 
 
     return (
@@ -161,13 +199,13 @@ export default function CeritaLucu({ posts }: CeritaLucuProps) {
                         onChange={(e) =>
                             setData("thumbnail", e.target.files ? e.target.files[0] : null)
                         }
-                        required
+                        required={!editingId}
                     />
 
                     <button
                         type="submit"
                         disabled={processing}
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer duration-200"
                     >
                         {processing ? "Menyimpan..." : "Simpan"}
                     </button>
@@ -197,13 +235,24 @@ export default function CeritaLucu({ posts }: CeritaLucuProps) {
                                     <td className="border px-4 py-2">
                                         {new Date(post.created_at).toLocaleDateString("id-ID")}
                                     </td>
-                                    <td className="border px-4 py-2 text-center">
-                                        <button
-                                            onClick={() => handleDelete(post.id)}
-                                            className="bg-red-600 text-white px-3 py-1 rounded"
-                                        >
-                                            Delete
-                                        </button>
+                                    <td className="border px-4 py-2 align-middle">
+                                        <div className="flex items-center justify-center gap-2">
+                                            <button
+                                                onClick={() => handleDelete(post.id)}
+                                                className="bg-red-600 hover:bg-red-700 duration-200 text-white px-3 py-2 rounded flex items-center gap-1 cursor-pointer"
+                                            >
+                                                <RiDeleteBinFill />
+                                                Delete
+                                            </button>
+
+                                            <button
+                                                onClick={() => handleEdit(post)}
+                                                className="bg-yellow-500 hover:bg-yellow-600 duration-200 text-white px-3 py-2 rounded flex items-center gap-1 cursor-pointer"
+                                            >
+                                                <FaEdit />
+                                                Edit
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))

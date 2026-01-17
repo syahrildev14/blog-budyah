@@ -10,7 +10,7 @@ export default function Tentang() {
 
             <section>
                 {/* ================= Header Tentang ================= */}
-                <div className="bg-white rounded-md p-6">
+                <div className="bg-white rounded-md">
                     <h1 className="text-3xl font-bold mb-4 text-red-600">
                         Apa itu E-Sastra Cerkak?
                     </h1>
@@ -22,7 +22,7 @@ export default function Tentang() {
                 </div>
 
                 {/* ================= Siapa Bisa Bergabung? ================= */}
-                <article className="bg-white rounded-md px-6 py-2 space-y-4">
+                <article className="bg-white rounded-md py-2 space-y-4">
                     <h2 className="text-xl font-semibold">
                         Siapa yang Bisa Bergabung?
                     </h2>
@@ -34,7 +34,7 @@ export default function Tentang() {
                 </article>
 
                 {/* ================= Siapa Bisa Bergabung? ================= */}
-                <article className="bg-white rounded-md px-6 py-2 space-y-4">
+                <article className="bg-white rounded-md  py-2 space-y-4">
                     <h2 className="text-xl font-semibold">
                         Mengapa Menulis di E-Sastra Cerkak?
 
@@ -45,10 +45,10 @@ export default function Tentang() {
                         <li>Portofolio Digital: Simpan karya Anda secara rapi sebagai rekam jejak kreativitas yang bisa diakses selamanya.</li>
                     </ul>
                 </article>
-                <p className='text-center leading-relaxed px-10 text-red-600 py-4 font-semibold italic text-lg'>"Bahasa Jawa adalah pusaka jati diri dan akar martabat bangsa. Jangan biarkan ia sunyi, suarakan jiwa dan gagasanmu melalui guratan cerkak yang akan abadi melintasi masa."</p>
+                <p className='text-center leading-relaxed  text-red-600 py-4 font-semibold italic text-lg'>"Bahasa Jawa adalah pusaka jati diri dan akar martabat bangsa. Jangan biarkan ia sunyi, suarakan jiwa dan gagasanmu melalui guratan cerkak yang akan abadi melintasi masa."</p>
 
                 {/* ================= Perkenalan ================= */}
-                <div className="bg-white rounded-md p-6">
+                <div className="bg-white rounded-md mb-6">
                     <h1 className="text-3xl font-bold mb-4 text-red-600">
                         Mengenal Sosok di Balik E-Sastra Cerkak
 
@@ -63,7 +63,7 @@ export default function Tentang() {
                 <img src={Img1} alt="Dyah Kurniawati" className="mx-auto min-w-auto shadow-xl" />
 
                 {/* ================= Tentang Pemilik ================= */}
-                <article className="bg-white rounded-md px-6 py-2 space-y-4 mt-10">
+                <article className="bg-white rounded-md py-2 space-y-4 mt-10">
                     <h2 className="text-xl font-semibold">
                         Tentang Pemilik
 

@@ -20,7 +20,6 @@ interface Post {
 
 }
 
-
 export default function Home() {
     const { popularPosts = [] } = usePage().props as {
         popularPosts?: Post[];
@@ -90,8 +89,8 @@ export default function Home() {
             </section>
 
             {/* Popular Post */}
-            <section id="popular" className="bg-white rounded-md">
-                <h2 className="text-xl font-semibold mb-6">Popular Posts</h2>
+            <section id="popular" className="bg-white rounded-md mt-10">
+                <h2 className="text-xl font-semibold mb-6 border-b-4 w-1/2 border-red-600">Popular Posts</h2>
 
                 {popularPosts.length === 0 && (
                     <p className="text-gray-500">Belum ada artikel</p>
@@ -154,12 +153,12 @@ export default function Home() {
                         <Link
                             key={post.id}
                             href={`/cerkak/${post.slug}`}
-                            className="group flex gap-5"
+                            className="group flex gap-5 col-span-1 md:col-span-2"
                         >
                             <img
                                 src={`/storage/${post.thumbnail}`}
                                 alt={post.title}
-                                className="md:w-60 md:h-20 w-40 h-25 object-cover rounded shadow-md"
+                                className="md:w-60 md:h-30 w-40 h-25 object-cover rounded shadow-md"
                             />
                             <div>
                                 <h4 className="text-sm font-medium leading-snug group-hover:text-red-600 transition line-clamp-2">
@@ -178,7 +177,7 @@ export default function Home() {
             {/* List */}
             {/* List */}
             <section className="bg-white rounded-md mt-10">
-                <h2 className="text-xl font-semibold mb-6">Top Posts</h2>
+                <h2 className="text-xl font-semibold mb-6 border-b-4 border-red-600 w-1/2">Top Posts</h2>
 
                 {posts.length === 0 && (
                     <p className="text-gray-500">Belum ada artikel</p>

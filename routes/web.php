@@ -82,6 +82,9 @@ Route::prefix('guru')->name('guru.')->group(function () {
     Route::delete('/kategori/{id}', [GuruDashboardController::class, 'destroy'])
         ->name('kategori.destroy');
 
+    // EDIT DATA
+    Route::put('/kategori/{id}', [PostController::class, 'update']);
+
     // =======================
     // HALAMAN KATEGORI JENJANG
     // =======================

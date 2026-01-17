@@ -3,7 +3,7 @@ import AdminLayout from "@/layouts/dashboard/app-layout";
 import Swal from "sweetalert2";
 
 import { Editor } from '@tinymce/tinymce-react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 // TinyMCE core
 import 'tinymce/tinymce'
@@ -23,11 +23,14 @@ import 'tinymce/plugins/table'
 import 'tinymce/plugins/code'
 import 'tinymce/plugins/quickbars'
 import 'tinymce/plugins/autoresize'
+import { FaEdit } from "react-icons/fa";
+import { RiDeleteBinFill } from "react-icons/ri";
 
 
 interface Post {
     id: number;
     title: string;
+    content: string;
     thumbnail: string;
     created_at: string;
 }
@@ -54,16 +57,29 @@ export default function CeritaAnak({ posts }: CeritaAnakProps) {
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        post("/guru/kategori", {
-            forceFormData: true,
-            onSuccess: () => {
-                reset();
-                Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
-            },
-            onError: () => {
-                Swal.fire("Gagal", "Gagal menambahkan data", "error");
-            },
-        });
+        if (editingId) {
+            router.post(`/guru/kategori/${editingId}`, {
+                _method: "PUT",
+                ...data,
+            }, {
+                forceFormData: true,
+                onSuccess: () => {
+                    reset();
+                    setEditingId(null);
+                    Swal.fire("Berhasil", "Data berhasil diupdate", "success");
+                },
+                onError: () => Swal.fire("Gagal", "Gagal mengupdate data", "error"),
+            });
+        } else {
+            post("/guru/kategori", {
+                forceFormData: true,
+                onSuccess: () => {
+                    reset();
+                    Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
+                },
+                onError: () => Swal.fire("Gagal", "Gagal menambahkan data", "error"),
+            });
+        }
     };
 
 
@@ -84,6 +100,26 @@ export default function CeritaAnak({ posts }: CeritaAnakProps) {
     };
 
     console.log(posts);
+
+    // Function Edit Data
+    const [editingId, setEditingId] = useState<number | null>(null);
+
+    const handleEdit = (post: Post) => {
+        setData({
+            title: post.title,
+            content: post.content ?? "",
+            thumbnail: null,
+            category: "CERITA_ANAK"
+        });
+
+        // simpan id untuk update
+        setEditingId(post.id);
+
+        // isi editor
+        if (editorRef.current) {
+            editorRef.current.setContent(post.content ?? "");
+        }
+    };
 
 
     return (
@@ -160,13 +196,13 @@ export default function CeritaAnak({ posts }: CeritaAnakProps) {
                         onChange={(e) =>
                             setData("thumbnail", e.target.files ? e.target.files[0] : null)
                         }
-                        required
+                        required={!editingId}
                     />
 
                     <button
                         type="submit"
                         disabled={processing}
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer duration-200"
                     >
                         {processing ? "Menyimpan..." : "Simpan"}
                     </button>
@@ -196,12 +232,23 @@ export default function CeritaAnak({ posts }: CeritaAnakProps) {
                                     <td className="border px-4 py-2">
                                         {new Date(post.created_at).toLocaleDateString("id-ID")}
                                     </td>
-                                    <td className="border px-4 py-2 text-center">
+                                    <td className="border px-4 py-2 text-center flex items-center justify-center space-x-2">
+                                        {/* Hapus Data */}
                                         <button
                                             onClick={() => handleDelete(post.id)}
-                                            className="bg-red-600 text-white px-3 py-1 rounded"
+                                            className="bg-red-600 hover:bg-red-700 duration-200 text-white px-3 py-2 rounded flex items-center gap-1 cursor-pointer"
                                         >
+                                            <RiDeleteBinFill />
                                             Delete
+                                        </button>
+
+                                        {/* Edit Data */}
+                                        <button
+                                            onClick={() => handleEdit(post)}
+                                            className="bg-yellow-500 hover:bg-yellow-600 duration-200 text-white px-3 py-2 rounded flex items-center gap-1 cursor-pointer"
+                                        >
+                                            <FaEdit />
+                                            Edit
                                         </button>
                                     </td>
                                 </tr>

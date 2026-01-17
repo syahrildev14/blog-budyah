@@ -22,17 +22,20 @@ export default function CeritaLucu({ posts = [] }: CeritaLucuProps) {
             <Head title="Cerita Lucu" />
 
             <section className="space-y-8">
-                <h1 className='font-bold text-3xl text-gray-800'>Cerita Lucu</h1>
+
+                <h1 className='font-bold text-3xl text-gray-800 border-b-4 border-red-600'>Cerita Lucu</h1>
+
+
                 {posts.map((post) => (
                     <Link
                         key={post.id}
                         href={`/cerkak/${post.slug}`}
-                        className="grid grid-cols-12 gap-6 group"
+                        className="grid grid-cols-1 md:grid-cols-12 gap-6 group"
                     >
                         <img
                             src={`/storage/${post.thumbnail}`}
                             alt={post.title}
-                            className="col-span-4 h-40 w-full object-cover rounded-md"
+                            className="md:col-span-4 col-span-8 h-40 w-full object-cover rounded-md shadow"
                         />
 
                         <div className="col-span-8">
