@@ -669,7 +669,7 @@ export default function Materi() {
                                 jelas, lan enak diwaca.
                             </li>
                             <li>
-                                <span className="font-semibold">Visualisasi:</span> Nambahi gambar ilustrasi sing jumbuh karo isi crita (umpamane gambar keluk dupa kanggo cerkak) <a href="#" className='font-semibold text-purple-600 hover:underline'>"Keluk Dupa Tengah Wengi"</a>
+                                <span className="font-semibold">Visualisasi:</span> Nambahi gambar ilustrasi sing jumbuh karo isi crita (umpamane gambar keluk dupa kanggo cerkak) <a href="https://e-sastracerkak.my.id/cerkak/keluk-dupa-tengah-wengi" className='font-semibold text-purple-600 hover:underline'>"Keluk Dupa Tengah Wengi"</a>
                             </li>
                         </ul>
                     </div>

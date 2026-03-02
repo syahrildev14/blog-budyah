@@ -60,7 +60,7 @@ export default function Create() {
       <Head title="Tambah Artikel" />
 
       <section className="bg-white rounded-md p-8 max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Upload Artikel</h1>
+        <h1 className="text-3xl font-bold mb-6">Upload Cerita</h1>
 
         <form onSubmit={submit} className="space-y-6">
 

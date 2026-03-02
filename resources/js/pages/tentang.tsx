@@ -61,17 +61,6 @@ export default function Tentang() {
                     </p>
                 </div>
                 <img src={Img1} alt="Dyah Kurniawati" className="mx-auto min-w-auto shadow-xl" />
-
-                {/* ================= Tentang Pemilik ================= */}
-                <article className="bg-white rounded-md py-2 space-y-4 mt-10">
-                    <h2 className="text-xl font-semibold">
-                        Tentang Pemilik
-
-                    </h2>
-                    <p className="text-gray-700 text-justify leading-relaxed">
-                        <span className="font-bold ">Dyah Kurniawati</span> merupakan penulis bahasa dan sastra Jawa yang sekarang mengabdi sebagai Guru Bahasa Jawa MTsN Kota Madiun. Ratusan tulisannya tersebar diberbagai media berbahasa Jawa seperti Jaya Baya, Panjebar Semangat, Djaka Lodang, Solopos, dan sebagainya. Buku karyanya berjudul “Cuwilan Critaku Uga Critamu, Tradisi Upacara Kematian Sebentuk Keberagaman Khazanah Budaya Jawa di Desa Kuwiran, Maneka Pawarta (Gambang Suling, Gong, Seni, lan Budaya), Keluk Dupa tengah Wengi, dan puluhan buku antologi. Dengan menulis, lulusan Universitas Negeri Surabaya ini juga telah meraih beberapa penghargaan lainnya dan juga penulis Bahamersa dan Sastra Jawa.
-                    </p>
-                </article>
             </section>
         </>
     );

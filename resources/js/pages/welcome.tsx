@@ -40,11 +40,11 @@ export default function Home() {
                     <div className="text-center md:text-left">
                         <h1 className="text-3xl md:text-4xl font-semibold leading-tight mb-6">
                             Selamat Datang di <br />
-                            <span className="text-red-600 font-bold text-6xl md:text-5xl">E-Sastra Cerkak</span>
+                            <span className="text-red-600 font-bold text-6xl md:text-5xl">E-Cerkak</span>
                         </h1>
 
                         <p className="text-gray-600 text-lg italic mb-8 max-w-lg">
-                            "Melestarikan Bahasa, Mengasah Kreativitas Melalui Tulisan"
+                            "Wahana Kreatif Menulis Sastra Jawa"
                         </p>
 
                         <div className="flex gap-4">
@@ -64,7 +64,7 @@ export default function Home() {
                         {[
                             { src: ImgHero1, text: "Crita Cekak, Rasa Jeru" },
                             { src: ImgHero2, text: "Sakeplasan, nanging Nabet" },
-                            { src: ImgHero3, text: "Cilik Wujude, Jembar Maknane" },
+                            { src: ImgHero3, text: "Sithik Wujude, Jembar Maknane" },
                             { src: ImgHero4, text: "Sawetara Wektu, Sejuta Rasa" },
                         ].map((item, idx) => (
                             <div key={idx} className="relative w-full h-40 rounded-lg overflow-hidden shadow-sm">

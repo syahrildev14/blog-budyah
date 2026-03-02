@@ -26,7 +26,7 @@ export default function Header() {
             <header className="h-16 flex items-center justify-between md:justify-around px-4 md:px-6">
                 <Link href="/">
                     <h1 className="text-lg md:text-xl text-red-600 font-bold">
-                        E-Sastra Cerkak
+                        E-Cerkak
                     </h1>
                 </Link>
 
