@@ -43,9 +43,7 @@ export default function Home() {
                             <span className="text-red-600 font-bold text-6xl md:text-5xl">E-Cerkak</span>
                         </h1>
 
-                        <p className="text-gray-600 text-lg italic mb-8 max-w-lg">
-                            "Wahana Kreatif Menulis Sastra Jawa"
-                        </p>
+                      
 
                         <div className="flex gap-4">
                             <Link

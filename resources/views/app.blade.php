@@ -32,7 +32,7 @@
             }
         </style>
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>{{ config('app.name', 'E-Cerkak') }}</title>
 
         <link rel="icon" href="/og.png" sizes="any">
         <link rel="icon" href="/og.png" type="image/svg+xml">

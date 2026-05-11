@@ -12,12 +12,12 @@ export default function Tentang() {
                 {/* ================= Header Tentang ================= */}
                 <div className="bg-white rounded-md">
                     <h1 className="text-3xl font-bold mb-4 text-red-600">
-                        Apa itu E-Sastra Cerkak?
+                        Apa itu E-Cerkak?
                     </h1>
                     <p className="text-gray-700 text-justify leading-relaxed">
-                        E-Sastra Cerkak adalah wahana kreatif digital yang dirancang khusus sebagai wadah bagi siswa, mahasiswa, guru, maupun masyarakat umum untuk mengeksplorasi kemampuan menulis sastra Jawa, khususnya Cerkak (Cerita Cekak). Kami hadir sebagai jembatan antara kekayaan tradisi sastra Jawa dengan kemudahan teknologi modern.
+                        E-Cerkak adalah wahana kreatif digital yang dirancang khusus sebagai wadah bagi siswa, mahasiswa, guru, maupun masyarakat umum untuk mengeksplorasi kemampuan menulis sastra Jawa, khususnya Cerkak (Cerita Cekak). Kami hadir sebagai jembatan antara kekayaan tradisi sastra Jawa dengan kemudahan teknologi modern.
                         <br /><br />
-                        E-Sastra Cerkak bukan sekadar situs web biasa, melainkan sebuah Sanggar Kreatif Digital. Di sini, setiap orang memiliki kesempatan untuk belajar, mempraktikkan teknik menulis cerita berbahasa Jawa, dan mempublikasikan karya mereka. Kami percaya bahwa Bahasa Jawa adalah bahasa yang kaya akan rasa dan nilai budi pekerti, dan menulis cerkak adalah salah satu cara terbaik untuk menjaga nyala api budaya tersebut agar tidak pudar ditelan zaman.
+                        E-Cerkak bukan sekadar situs web biasa, melainkan sebuah Sanggar Kreatif Digital. Di sini, setiap orang memiliki kesempatan untuk belajar, mempraktikkan teknik menulis cerita berbahasa Jawa, dan mempublikasikan karya mereka. Kami percaya bahwa Bahasa Jawa adalah bahasa yang kaya akan rasa dan nilai budi pekerti, dan menulis cerkak adalah salah satu cara terbaik untuk menjaga nyala api budaya tersebut agar tidak pudar ditelan zaman.
                     </p>
                 </div>
 
@@ -36,7 +36,7 @@ export default function Tentang() {
                 {/* ================= Siapa Bisa Bergabung? ================= */}
                 <article className="bg-white rounded-md  py-2 space-y-4">
                     <h2 className="text-xl font-semibold">
-                        Mengapa Menulis di E-Sastra Cerkak?
+                        Mengapa Menulis di E-Cerkak?
 
                     </h2>
                     <ul className="text-gray-700 text-justify leading-relaxed list-decimal pl-4">
@@ -50,14 +50,14 @@ export default function Tentang() {
                 {/* ================= Perkenalan ================= */}
                 <div className="bg-white rounded-md mb-6">
                     <h1 className="text-3xl font-bold mb-4 text-red-600">
-                        Mengenal Sosok di Balik E-Sastra Cerkak
+                        Mengenal Sosok di Balik E-Cerkak
 
                     </h1>
                     <p className="text-gray-700 text-justify leading-relaxed">
                         Dyah Kurniawati adalah seorang pendidik sekaligus sastrawan yang mendedikasikan hidupnya untuk pelestarian bahasa dan sastra Jawa. Saat ini, beliau mengabdi sebagai Guru Bahasa Jawa di MTsN Kota Madiun.
                         <br /><br />Baginya, menulis adalah jalan perjuangan budaya. Jejak kreativitasnya telah terukir melalui ratusan karya yang tersebar di berbagai media bergengsi berbahasa Jawa, seperti Jaya Baya, Panjebar Semangat, Djaka Lodang, Lensa Sastra, hingga harian Solopos.
                         <br /><br />Sebagai penulis yang produktif, lulusan Universitas Negeri Surabaya (UNESA) ini telah melahirkan berbagai buku bernuansa Jawa, di antaranya; Cuwilan Critaku Uga Critamu, Tradisi Upacara Kematian Sebentuk Keberagaman Khazanah Budaya Jawa di Desa Kuwiran, Maneka Pawarta (Gambang Suling, Gong, Seni, lan Budaya), Keluk Dupa Tengah Wengi, serta puluhan buku antologi bersama penulis nasional lainnya.
-                        <br /><br />Dedikasinya dalam dunia literasi tidak hanya membuahkan karya, tetapi juga berbagai penghargaan bergengsi, salah satunya sebagai Penulis Terproduktif di tingkat Kemenag Provinsi Jawa Timur. Melalui platform E-Sastra Cerkak ini, beliau berharap dapat menularkan semangat menulis kepada generasi muda agar bahasa Jawa tetap hidup, relevan, dan terus berkembang di era digital. "Genggam Teknologinya, Lestarikan Sastranya!"
+                        <br /><br />Dedikasinya dalam dunia literasi tidak hanya membuahkan karya, tetapi juga berbagai penghargaan bergengsi, salah satunya sebagai Penulis Terproduktif di tingkat Kemenag Provinsi Jawa Timur. Melalui platform E-Cerkak ini, beliau berharap dapat menularkan semangat menulis kepada generasi muda agar bahasa Jawa tetap hidup, relevan, dan terus berkembang di era digital. "Genggam Teknologinya, Lestarikan Sastranya!"
                     </p>
                 </div>
                 <img src={Img1} alt="Dyah Kurniawati" className="mx-auto min-w-auto shadow-xl" />
