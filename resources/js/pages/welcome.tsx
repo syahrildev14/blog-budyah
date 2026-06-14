@@ -34,7 +34,7 @@ export default function Home() {
     return (
         <div>
             {/* Hero Section */}
-            <section className="bg-white">
+            <section className="bg-white text-accent">
                 <div className="max-w-7xl mx-auto py-4 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                     {/* Left Content */}
                     <div className="text-center md:text-left">
@@ -87,7 +87,7 @@ export default function Home() {
             </section>
 
             {/* Popular Post */}
-            <section id="popular" className="bg-white rounded-md mt-10">
+            <section id="popular" className="bg-white rounded-md mt-10 text-accent">
                 <h2 className="text-xl font-semibold mb-6 border-b-4 w-1/2 border-red-600">Popular Posts</h2>
 
                 {popularPosts.length === 0 && (
@@ -175,7 +175,7 @@ export default function Home() {
 
             {/* List */}
             {/* List */}
-            <section className="bg-white rounded-md mt-10">
+            <section className="bg-white rounded-md mt-10 text-accent">
                 <h2 className="text-xl font-semibold mb-6 border-b-4 border-red-600 w-1/2">Top Posts</h2>
 
                 {posts.length === 0 && (

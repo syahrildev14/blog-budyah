@@ -17,7 +17,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
                     gap-6 px-4 md:px-6 py-6
                 ">
                     {/* Main Content */}
-                    <main className="flex-1 bg-white rounded-md p-6">
+                    <main className="flex-1 bg-white rounded-md p-6 text-accent">
                         {children}
                     </main>
 

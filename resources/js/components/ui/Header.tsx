@@ -22,7 +22,7 @@ export default function Header() {
     }
 
     return (
-        <div className="sticky top-0 z-50 bg-white border-b">
+        <div className="sticky top-0 z-50 bg-white border-b text-accent">
             {/* HEADER UTAMA */}
             <header className="h-16 flex items-center justify-between md:justify-around px-4">
                 <Link

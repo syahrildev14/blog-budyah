@@ -17,7 +17,7 @@ export default function Materi() {
                 </div>
 
                 {/* ================= Titikane Cerkak (Ciri-Ciri) ================= */}
-                <h2 className="text-2xl font-bold  bg-red-600 text-white text-center p-3 mb-3">Unit I: Sinau Makna <br /><span className='italic font-light text-sm'>"Ndhudhuk Makna, Amrih Sampurna"</span></h2>
+                <h2 className="text-2xl font-bold bg-lime-500 text-white text-center p-3 mb-3">Unit I: Sinau Makna</h2>
                 <p className="leading-relaxed font-semibold text-lg text-center italic md:w-1/2 mx-auto text-red-600">
                     Cerkak (Cerita Cekak) yaiku salah sijine sastra Jawa awujud prosa kang nyritakake cuplikan
                     panguripan kanthi ringkes, mentes, lan padhet.
@@ -122,7 +122,7 @@ export default function Materi() {
                             Iki minangka dalan pembuka crita. Ing kene penulis wiwit ngenalake jagad critane marang pamaca.
                         </p>
                         <p className='text-gray-700'><span className='font-semibold '>Isine : </span>Iki minangka dalan pembuka crita. Ing kene penulis wiwit ngenalake jagad critane marang pamaca.</p>
-                        <p className='text-gray-700'><span className='font-semibold'>Tujuane : </span>Supaya pembaca ngrasa akrab lan ngerti kahanan wiwitan sadurunge ana masalah.</p>
+                        <p className='text-gray-700'><span className='font-semibold'>Tujuane : </span>Supaya pamaca ngrasa akrab lan ngerti kahanan wiwitan sadurunge ana masalah.</p>
                         <p className='italic text-gray-700'><span className='font-semibold not-italic'>Tuladha : </span>"Rina nangis kamisesegen lungguh ing sela-selane Dewi lan Hani. Dheweke ngewel merga thong-thongen bubar weruh wewayangan obah-obah ing suwalike korden cendhela."</p>
                     </article>
 
@@ -135,7 +135,7 @@ export default function Materi() {
                             Iki perangan nalika crita wiwit "panas". Masalah utawa konflik wiwit teka ngganggu paraga utama.
                         </p>
                         <p className='text-gray-700'><span className='font-semibold '>Isine : </span>Ana prastawa sing nggawe paraga utama bingung, susah, utawa kudu milih dalan urip.</p>
-                        <p className='text-gray-700'><span className='font-semibold'>Tujuane : </span>Nggugah rasa panasaran lan emosi pembaca.</p>
+                        <p className='text-gray-700'><span className='font-semibold'>Tujuane : </span>Nggugah rasa panasaran lan emosi pamaca.</p>
                         <p className='italic text-gray-700'><span className='font-semibold not-italic'>Tuladha : </span>"Ujug-ujug kabeh meneng lan nglirik arahe cendhela cedhak tlundhakan. Kabeh ngrasa mengkirig weruh wewayangan obah-obah ing suwalike cendhela kuwi..."</p>
                     </article>
 
@@ -160,9 +160,9 @@ export default function Materi() {
                         <p className="text-gray-700 text-justify leading-relaxed">
                             Sawise tekan puncak masalah, alur crita wiwit mudhun. Masalah sing mau ruwet wiwit nemu dalan pepadhang utawa solusi.
                         </p>
-                        <p className='text-gray-700'><span className='font-semibold '>Isine : </span>Carane paraga utama ngrampungake masalahe. Pungkasan crita bisa dadi Senang (Happy Ending) utawa Susah (Sad Ending).</p>
-                        <p className='text-gray-700'><span className='font-semibold'>Tujuane : </span>Menehi jawaban marang pembaca kepiye nasibe paraga.</p>
-                        <p className='italic text-gray-700'><span className='font-semibold not-italic'>Tuladha : </span>"Pranyata sing neng suwalike korden mau dudu setan, nanging Bu Mondhok sing sengaja nindakake kuwi supaya bocah-bocah ndang meneng lan turu."</p>
+                        <p className='text-gray-700'><span className='font-semibold '>Isine : </span>Carane paraga utama ngrampungake masalahe. Pungkasan crita bisa dadi Seneng (Happy Ending) utawa Susah (Sad Ending).</p>
+                        <p className='text-gray-700'><span className='font-semibold'>Tujuane : </span>Menehi jawaban marang pamaca kepiye nasibe paraga.</p>
+                        <p className='italic text-gray-700'><span className='font-semibold not-italic'>Tuladha : </span>"Pranyata sing neng suwalike korden mau dudu setan, nanging ibu penjaga pondhok sing sengaja nindakake kuwi supaya bocah-bocah ndang meneng lan turu."</p>
                     </article>
 
                     {/* ========================================================= */}
@@ -182,7 +182,7 @@ export default function Materi() {
                         {/* ====================== */}
                         {/* UNIT II: BEDHAH RASA   */}
                         {/* ====================== */}
-                        <h2 className="text-2xl font-bold  bg-red-600 text-white text-center p-3 mb-3">Unit II: Bedhah Rasa (Design)<br /><span className='italic font-light text-sm'>"Ngrancang nyawa, nata prastawa, mbedhah jeroaning karya"</span></h2>
+                        <h2 className="text-2xl font-bold bg-lime-500 text-white text-center p-3 mb-3">Unit II: Bedhah Rasa</h2>
                         <p>
                             Sadurunge nulis, kita kudu ngerti apa wae “bahan” sing dibutuhake supaya cerkak dadi apik.
                             Bahan kasebut sinebut Unsur Intrinsik lan Unsur Ekstrinsik.
@@ -219,7 +219,7 @@ export default function Materi() {
 
                         <ul className="list-disc list-inside space-y-1">
                             <li>
-                                <span className="font-semibold">Protagonis:</span> paraga becik utawa disenengi pembaca.
+                                <span className="font-semibold">Protagonis:</span> paraga becik utawa disenengi pamaca.
                             </li>
                             <li>
                                 <span className="font-semibold">Antagonis:</span> paraga ala sing nimbulaké konflik.
@@ -336,7 +336,7 @@ export default function Materi() {
                         {/* ====================== */}
                         {/* UNIT III: NGOLAH BASA  */}
                         {/* ====================== */}
-                        <h2 className="text-2xl font-bold  bg-red-600 text-white text-center p-3 mb-3">Unit III: Ngolah Basa (Develop)<br /><span className='italic font-light text-sm'>"Mantesi tembung, ngronce ukara, ngidupake crita"</span></h2>
+                        <h2 className="text-2xl font-bold bg-lime-500 text-white text-center p-3 mb-3">Unit III: Ngolah Basa<br /></h2>
                         <p>
                             Fokus unit iki yaiku kepiye carane panulis "ngracik" basa supaya crita ora mung dadi laporan
                             kedadeyan, nanging dadi karya sastra sing urip lan nengsemake.
@@ -372,7 +372,7 @@ export default function Materi() {
                         </ul>
 
                         {/* Rinengga */}
-                        <p className="font-medium mt-2">B. Basa Rinengga (Lelaning Basa)</p>
+                        <p className="font-medium mt-2">B. Basa Rinengga (Lelewane Basa)</p>
                         <p>
                             Basa rinengga digunakake kanggo nambahi kaendahan. Salah sijine yaiku onomatope lan citraan.
                         </p>
@@ -520,7 +520,7 @@ export default function Materi() {
                         {/* ============================ */}
                         {/* UNIT IV: NGRAKIT CERKAK     */}
                         {/* ============================ */}
-                        <h2 className="text-2xl font-bold  bg-red-600 text-white text-center p-3 mb-3">Unit IV: Ngrakit Cerkak (Develop)<br /><span className='italic font-light text-sm'>"Nyenyawa raga, mujudake crita"</span></h2>
+                        <h2 className="text-2xl font-bold bg-lime-500 text-white text-center p-3 mb-3">Unit IV: Ngrakit Crita</h2>
                         <p>
                             Ngrakit cerkak iku ibarat mbangun omah. Bahan-bahan kaya bata (ide), semen (basa), lan
                             rangka (alur) kudu dipasang kanthi pas supaya dadi wangunan sing santosa lan endah.
@@ -629,7 +629,7 @@ export default function Materi() {
 
                         <p className="font-medium mt-1">3. Nata Cengkorongan (Kerangka)</p>
                         <p>
-                            Kerangka supaya crita ora <span className="italic">nggrambyang</span>. Skema sederhana:
+                            Supaya kerangka crita ora nggrambyang dibutuhake skema prasaja, yaiku:
                         </p>
                         <ul className="list-decimal list-inside space-y-1">
                             <li>Purwaka (Pembuka)</li>
@@ -640,21 +640,19 @@ export default function Materi() {
 
                         <p className="font-medium mt-1">4. Nglancipake Ukara (Eksekusi Diksi)</p>
                         <p>
-                            Kene proses nulis sejati. Gunakake tembung entar lan pepindhan kanggo ngolah rasa.
+                            Supaya crita dadi endah, perlu nggunakake tembung entar lan pepindhan kanggo ngolah rasa.
                         </p>
 
-                        <p className="font-medium mt-1">5. Niti Priksa &amp; Madhangi (Penyuntingan)</p>
+                        <p className="font-medium mt-1">5. Niti Priksa (Penyuntingan)</p>
                         <p>
-                            Wacan maneh kanthi swara. Potong ukara ganjel. Cek unggah-ungguh basa.
+                            Wacanen maneh crita sing wis ditulis kanthi tliti. Cek unggah-ungguh basa. Yen ana ukara sing ora pener dibenerke utawa dibuwang bae.
                         </p>
                         {/* ============================ */}
                         {/* UNIT V: MADHANGI KARYA       */}
                         {/* ============================ */}
-                        <h2 className="text-2xl font-bold  bg-red-600 text-white text-center p-3 mb-3">Unit V: Madhangi Karya (Disseminate)<br /><span className='italic font-light text-sm'>"Mbagi crita, nularake tresna"</span></h2>
+                        <h2 className="text-2xl font-bold bg-lime-500 text-white text-center p-3 mb-3">Unit V: Nyebarake Karya</h2>
                         <p>
-                            Sawisé crita rampung ditulis lan disunting, langkah sabanjure yaiku madhangi utawa
-                            nyebarake karya supaya diwaca wong liya. Iki minangka tahap krusial amarga karya sastra
-                            bakal entuk urip nalika diwaca lan diapresiasi wong.
+                            Sawisé crita rampung ditulis lan disunting, langkah sabanjure yaiku nyebarake karya supaya diwaca wong liya. Iki minangka tahap krusial amarga karya sastra bakal bakal sampurna nalika diapresiasi dening pamaca.
                         </p>
 
                         <h3 className="font-semibold mt-2">Langkah-langkah Sadurunge Publikasi</h3>
@@ -662,7 +660,7 @@ export default function Materi() {
                         <ul className="list-disc list-inside space-y-1">
                             <li>
                                 <span className="font-semibold">Editing:</span> Neliti manawa ora ana salah ketik
-                                (typo) utawa kalimat ganjel.
+                                (typo) utawa ukara sing durung bener lan pener.
                             </li>
                             <li>
                                 <span className="font-semibold">Layouting:</span> Nata tampilan tulisan supaya rapi,

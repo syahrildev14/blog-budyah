@@ -38,6 +38,7 @@ export default function Aside() {
                 space-y-6
                 md:sticky md:top-36
                 self-start
+                text-accent
             "
         >
             {/* ================= Follow Us ================= */}
