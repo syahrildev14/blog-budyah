@@ -8,6 +8,10 @@ class LoginResponse implements LoginResponseContract
 {
     public function toResponse($request)
     {
+        if ($request->user()?->isGuru()) {
+            return redirect('/guru/dashboard');
+        }
+
         return redirect('/'); // setelah login, redirect ke home
     }
 }

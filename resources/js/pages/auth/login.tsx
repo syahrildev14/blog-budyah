@@ -1,4 +1,4 @@
-import { Form, Head, router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
 
 interface LoginProps {
@@ -17,9 +17,6 @@ export default function Login({ status }: LoginProps) {
         setErrors({});
 
         router.post('/login', { email, password }, {
-            onSuccess: () => {
-                router.visit('/'); // redirect ke /
-            },
             onError: (err) => {
                 setErrors(err);
             },

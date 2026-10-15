@@ -5,11 +5,21 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\Post;
-use Illuminate\Support\Str;
+use App\Support\HtmlSanitizer;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 
 class GuruDashboardController extends Controller
 {
+    private const CERITA_CATEGORIES = [
+        'CERITA_LUCU',
+        'CERITA_MISTERI',
+        'CERITA_CINTA',
+        'CERITA_ANAK',
+        'CERITA_KEHIDUPAN',
+    ];
+
     public function index()
     {
         $totalPosts = Post::count();
@@ -23,15 +33,17 @@ class GuruDashboardController extends Controller
                 'count' => $item->count,
             ]);
 
-        // MySQL / MariaDB (bukan SQLite)
-        $postsByMonth = Post::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-            ->groupByRaw('MONTH(created_at)')
-            ->orderByRaw('MONTH(created_at)')
+        // Grouped in PHP (not with a raw MONTH() query) so this works the
+        // same regardless of the DB driver (MySQL, SQLite, ...).
+        $postsByMonth = Post::select('created_at')
             ->get()
-            ->map(fn($item) => [
-                'month' => Carbon::create()->month((int) $item->month)->format('M'),
-                'count' => $item->count,
-            ]);
+            ->groupBy(fn($post) => $post->created_at->format('n'))
+            ->map(fn($group, $month) => [
+                'month' => Carbon::create()->month((int) $month)->format('M'),
+                'count' => $group->count(),
+            ])
+            ->sortBy(fn($item, $month) => (int) $month)
+            ->values();
 
         return Inertia::render('guru/dashboard', [
             'stats' => [
@@ -47,7 +59,8 @@ class GuruDashboardController extends Controller
     {
         $posts = Post::where('category', 'CERITA_LUCU')
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('guru/cerita-lucu', [
             'posts' => $posts
@@ -58,7 +71,8 @@ class GuruDashboardController extends Controller
     {
         $posts = Post::where('category', 'CERITA_MISTERI')
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('guru/cerita-misteri', [
             'posts' => $posts
@@ -69,7 +83,8 @@ class GuruDashboardController extends Controller
     {
         $posts = Post::where('category', 'CERITA_CINTA')
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('guru/cerita-cinta', [
             'posts' => $posts
@@ -80,7 +95,8 @@ class GuruDashboardController extends Controller
     {
         $posts = Post::where('category', 'CERITA_ANAK')
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('guru/cerita-anak', [
             'posts' => $posts
@@ -91,7 +107,8 @@ class GuruDashboardController extends Controller
     {
         $posts = Post::where('category', 'CERITA_KEHIDUPAN')
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('guru/cerita-kehidupan', [
             'posts' => $posts
@@ -101,24 +118,24 @@ class GuruDashboardController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title'     => 'required|string|max:255',
             'thumbnail' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'category'  => 'required|string',
+            'category'  => ['required', Rule::in(self::CERITA_CATEGORIES)],
+            'content'   => 'nullable|string',
         ]);
 
         // upload image
         $path = $request->file('thumbnail')->store('posts', 'public');
 
         Post::create([
-            'title'     => $request->title,
-            'slug'      => Str::slug($request->title),
-            'category'  => $request->category,
+            'title'     => $validated['title'],
+            'category'  => $validated['category'],
             'thumbnail' => $path,
-            'content'   => $request->content ?? null,
+            'content'   => HtmlSanitizer::clean($validated['content'] ?? null),
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Data berhasil ditambahkan');
     }
 
 
@@ -129,7 +146,7 @@ class GuruDashboardController extends Controller
     // =====================================================
     public function SD()
     {
-        $posts = Post::where('category', 'SD')->orderBy('created_at', 'desc')->get();
+        $posts = Post::where('category', 'SD')->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
         return Inertia::render('guru/kategori/sd', [
             'posts' => $posts
@@ -138,7 +155,7 @@ class GuruDashboardController extends Controller
 
     public function SMP()
     {
-        $posts = Post::where('category', 'SMP')->orderBy('created_at', 'desc')->get();
+        $posts = Post::where('category', 'SMP')->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
         return Inertia::render('guru/kategori/smp', [
             'posts' => $posts
@@ -147,7 +164,7 @@ class GuruDashboardController extends Controller
 
     public function SMA()
     {
-        $posts = Post::where('category', 'SMA')->orderBy('created_at', 'desc')->get();
+        $posts = Post::where('category', 'SMA')->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
         return Inertia::render('guru/kategori/sma', [
             'posts' => $posts
@@ -156,7 +173,7 @@ class GuruDashboardController extends Controller
 
     public function Umum()
     {
-        $posts = Post::where('category', 'Umum')->orderBy('created_at', 'desc')->get();
+        $posts = Post::where('category', 'Umum')->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
         return Inertia::render('guru/kategori/umum', [
             'posts' => $posts
@@ -170,9 +187,8 @@ class GuruDashboardController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        // Hapus thumbnail jika ada
-        if ($post->thumbnail && file_exists(storage_path('app/public/' . $post->thumbnail))) {
-            unlink(storage_path('app/public/' . $post->thumbnail));
+        if ($post->thumbnail) {
+            Storage::disk('public')->delete($post->thumbnail);
         }
 
         $post->delete();

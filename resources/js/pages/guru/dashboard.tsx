@@ -12,6 +12,8 @@ import {
     ArcElement,
     ChartOptions,
 } from "chart.js";
+import { FileText, LayoutGrid, TrendingUp, Sparkles, type LucideIcon } from "lucide-react";
+import { ReactNode } from "react";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -31,114 +33,206 @@ interface Stats {
     postsByMonth: MonthStat[];
 }
 
+// Fixed categorical order (validated for CVD-safe adjacency) — never cycle hues.
+const CATEGORY_COLORS = [
+    "#2a78d6", // blue
+    "#008300", // green
+    "#e87ba4", // magenta
+    "#eda100", // yellow
+    "#1baf7a", // aqua
+    "#eb6834", // orange
+    "#4a3aa7", // violet
+    "#e34948", // red
+    "#898781", // overflow bucket (9th+ category)
+];
+
+const CATEGORY_LABELS: Record<string, string> = {
+    SD: "SD / MI",
+    SMP: "SMP / MTs",
+    SMA: "SMA / SMK",
+    Umum: "Umum",
+    CERITA_LUCU: "Cerita Lucu",
+    CERITA_MISTERI: "Cerita Misteri",
+    CERITA_CINTA: "Cerita Cinta",
+    CERITA_ANAK: "Cerita Anak",
+    CERITA_KEHIDUPAN: "Cerita Kehidupan",
+};
+
+const AXIS_GRID = { color: "#e1e0d9" };
+const AXIS_TICKS = { color: "#898781", font: { size: 11 } };
+
 export default function Dashboard() {
     const { stats } = usePage<{ stats: Stats }>().props;
 
-    // Chart kategori (Pie)
+    const categoryLabels = stats.postsByCategory.map((c) => CATEGORY_LABELS[c.category] ?? c.category);
+    const categoryColors = stats.postsByCategory.map((_, i) => CATEGORY_COLORS[i % CATEGORY_COLORS.length]);
+    const topCategory = [...stats.postsByCategory].sort((a, b) => b.count - a.count)[0];
+    const totalThisYear = stats.postsByMonth.reduce((sum, m) => sum + m.count, 0);
+
     const categoryData = {
-        labels: stats.postsByCategory.map((c) => c.category),
+        labels: categoryLabels,
         datasets: [
             {
-                label: "Jumlah Post",
+                label: "Jumlah Artikel",
                 data: stats.postsByCategory.map((c) => c.count),
-                backgroundColor: [
-                    "#f87171",
-                    "#fbbf24",
-                    "#34d399",
-                    "#60a5fa",
-                    "#a78bfa",
-                ],
+                backgroundColor: categoryColors,
+                borderColor: "#fcfcfb",
+                borderWidth: 2,
             },
         ],
     };
 
-    // Chart bulan (Bar vertikal)
     const monthData = {
         labels: stats.postsByMonth.map((m) => m.month),
         datasets: [
             {
-                label: "Jumlah Post",
+                label: "Artikel",
                 data: stats.postsByMonth.map((m) => m.count),
-                backgroundColor: "#f87171",
+                backgroundColor: "#dc2626",
+                borderRadius: 6,
+                maxBarThickness: 36,
             },
         ],
     };
 
-    // Chart horizontal (Bar horizontal)
     const horizontalData = {
-        labels: stats.postsByCategory.map((c) => c.category),
+        labels: categoryLabels,
         datasets: [
             {
-                label: "Jumlah Post per Kategori",
+                label: "Jumlah Artikel",
                 data: stats.postsByCategory.map((c) => c.count),
-                backgroundColor: "#60a5fa",
+                backgroundColor: categoryColors,
+                borderRadius: 6,
             },
         ],
     };
 
-    // Options chart
-    const chartOptions: ChartOptions<"bar"> = {
+    const pieOptions = {
         responsive: true,
         maintainAspectRatio: false,
-        indexAxis: "y", // horizontal
         plugins: {
             legend: {
-                position: "bottom",
-            },
-            title: {
-                display: false,
+                position: "bottom" as const,
+                labels: { color: "#52514e", boxWidth: 10, boxHeight: 10, padding: 14, font: { size: 12 } },
             },
         },
-        scales: {
-            x: {
-                beginAtZero: true,
-                ticks: {
-                    stepSize: 1,
-                },
-            },
-        },
-    };
+    } satisfies ChartOptions<"pie">;
 
-
-    const defaultOptions: ChartOptions<"bar"> = {
+    const monthOptions = {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: {
-            legend: { position: "bottom" },
-            title: { display: false },
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { grid: { display: false }, ticks: AXIS_TICKS },
+            y: { beginAtZero: true, ticks: { ...AXIS_TICKS, stepSize: 1 }, grid: AXIS_GRID },
         },
-    };
+    } satisfies ChartOptions<"bar">;
+
+    const horizontalOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: "y" as const,
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { beginAtZero: true, ticks: { ...AXIS_TICKS, stepSize: 1 }, grid: AXIS_GRID },
+            y: { grid: { display: false }, ticks: AXIS_TICKS },
+        },
+    } satisfies ChartOptions<"bar">;
 
     return (
         <AdminLayout>
-            <div className="bg-white p-6 rounded shadow space-y-6">
-                <h2 className="text-2xl font-bold">Dashboard</h2>
-                <p className="text-gray-700">
-                    Total Posts: <span className="font-semibold">{stats.totalPosts}</span>
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Pie Chart kategori */}
-                    <div className="bg-white p-4 rounded h-96">
-                        <h3 className="font-semibold mb-4">Posts per Category</h3>
-                        <Pie data={categoryData} options={defaultOptions} />
-                    </div>
-
-                    {/* Bar vertikal per bulan */}
-                    <div className="bg-white p-4 rounded h-96">
-                        <h3 className="font-semibold mb-4">Posts per Month</h3>
-                        <Bar data={monthData} options={defaultOptions} />
-                    </div>
+            <div className="space-y-6">
+                {/* Stat cards */}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <StatCard icon={FileText} label="Total Artikel" value={stats.totalPosts} accent="bg-red-50 text-red-600" />
+                    <StatCard
+                        icon={LayoutGrid}
+                        label="Jumlah Kategori"
+                        value={stats.postsByCategory.length}
+                        accent="bg-blue-50 text-blue-600"
+                    />
+                    <StatCard
+                        icon={Sparkles}
+                        label="Kategori Terbanyak"
+                        value={topCategory ? CATEGORY_LABELS[topCategory.category] ?? topCategory.category : "-"}
+                        accent="bg-amber-50 text-amber-600"
+                        isText
+                    />
+                    <StatCard
+                        icon={TrendingUp}
+                        label="Artikel Tahun Ini"
+                        value={totalThisYear}
+                        accent="bg-emerald-50 text-emerald-600"
+                    />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-                    {/* Horizontal bar chart */}
-                    <div className="bg-white p-4 rounded h-96">
-                        <h3 className="font-semibold mb-4">Posts per Category (Horizontal)</h3>
-                        <Bar data={horizontalData} options={chartOptions} />
-                    </div>
+                {/* Charts */}
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    <ChartCard title="Distribusi Kategori" description="Proporsi artikel pada setiap kategori">
+                        {stats.postsByCategory.length === 0 ? (
+                            <EmptyChart />
+                        ) : (
+                            <Pie data={categoryData} options={pieOptions} />
+                        )}
+                    </ChartCard>
+
+                    <ChartCard title="Tren Artikel per Bulan" description="Jumlah artikel yang dipublikasikan tiap bulan">
+                        {stats.postsByMonth.length === 0 ? (
+                            <EmptyChart />
+                        ) : (
+                            <Bar data={monthData} options={monthOptions} />
+                        )}
+                    </ChartCard>
                 </div>
+
+                <ChartCard title="Peringkat Kategori" description="Jumlah artikel per kategori, diurutkan dari yang terbanyak">
+                    {stats.postsByCategory.length === 0 ? (
+                        <EmptyChart />
+                    ) : (
+                        <Bar data={horizontalData} options={horizontalOptions} />
+                    )}
+                </ChartCard>
             </div>
         </AdminLayout>
     );
+}
+
+function StatCard({
+    icon: Icon,
+    label,
+    value,
+    accent,
+    isText,
+}: {
+    icon: LucideIcon;
+    label: string;
+    value: string | number;
+    accent: string;
+    isText?: boolean;
+}) {
+    return (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div className={`mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl ${accent}`}>
+                <Icon size={20} />
+            </div>
+            <p className="text-sm text-gray-500">{label}</p>
+            <p className={`mt-1 font-bold text-gray-900 ${isText ? "truncate text-lg" : "text-2xl"}`}>{value}</p>
+        </div>
+    );
+}
+
+function ChartCard({ title, description, children }: { title: string; description?: string; children: ReactNode }) {
+    return (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+            <div className="mb-4">
+                <h3 className="font-semibold text-gray-900">{title}</h3>
+                {description && <p className="text-xs text-gray-500">{description}</p>}
+            </div>
+            <div className="h-72 md:h-80">{children}</div>
+        </div>
+    );
+}
+
+function EmptyChart() {
+    return <div className="flex h-full items-center justify-center text-sm text-gray-400">Belum ada data untuk ditampilkan</div>;
 }

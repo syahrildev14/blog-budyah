@@ -153,6 +153,7 @@ export default function Create() {
               accept="image/*"
               onChange={(e) => setData('thumbnail', e.target.files ? e.target.files[0] : null)}
             />
+            <p className="text-xs text-gray-500 mt-1">Maks. ukuran file 2MB.</p>
             {errors.thumbnail && <p className="text-red-600 text-sm mt-1">{errors.thumbnail}</p>}
           </div>
 
@@ -166,7 +167,7 @@ export default function Create() {
               {processing ? 'Menyimpan...' : 'Simpan'}
             </button>
 
-            <Link href="/dashboard" className="px-6 py-2 border rounded-md">
+            <Link href="/" className="px-6 py-2 border rounded-md">
               Batal
             </Link>
           </div>

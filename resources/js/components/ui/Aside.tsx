@@ -6,6 +6,7 @@ import {
     FaWhatsapp,
 } from 'react-icons/fa';
 import { ReactNode } from 'react';
+import { handleImageError } from '@/lib/utils';
 
 /* ================= Types ================= */
 
@@ -68,6 +69,7 @@ export default function Aside() {
                             >
                                 <img
                                     src={`/storage/${post.thumbnail}`}
+                                    onError={handleImageError}
                                     alt={post.title}
                                     className="w-16 h-16 object-cover rounded"
                                 />

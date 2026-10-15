@@ -21,7 +21,16 @@ class Post extends Model
     protected static function booted()
     {
         static::creating(function ($post) {
-            $post->slug = Str::slug($post->title);
+            $base = Str::slug($post->title);
+            $slug = $base;
+            $suffix = 2;
+
+            while (static::where('slug', $slug)->exists()) {
+                $slug = "{$base}-{$suffix}";
+                $suffix++;
+            }
+
+            $post->slug = $slug;
         });
     }
 

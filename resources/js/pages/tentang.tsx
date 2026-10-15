@@ -49,10 +49,24 @@ export default function Tentang() {
 
                 {/* ================= Perkenalan ================= */}
                 <div className="bg-white rounded-md mb-6">
-                    <h1 className="text-3xl font-bold mb-4 text-red-600">
-                        Mengenal Sosok di Balik E-Cerkak
+                    <div className="flex flex-col items-center text-center mb-8">
+                        <div className="relative mb-5">
+                            <div className="absolute inset-0 scale-110 rounded-2xl bg-gradient-to-br from-red-500 via-orange-400 to-amber-300 opacity-25 blur-2xl" />
+                            <img
+                                src={Img1}
+                                alt="Dyah Kurniawati"
+                                className="relative h-64 w-64 rounded-2xl border-4 border-white object-cover shadow-2xl ring-2 ring-red-600/40 md:h-80 md:w-80"
+                            />
+                        </div>
 
-                    </h1>
+                        <h1 className="text-3xl font-bold text-red-600">
+                            Mengenal Sosok di Balik E-Cerkak
+                        </h1>
+                        <p className="mt-1 text-sm font-medium tracking-wide text-gray-500">
+                            Dyah Kurniawati &mdash; Guru Bahasa Jawa &amp; Sastrawan
+                        </p>
+                    </div>
+
                     <p className="text-gray-700 text-justify leading-relaxed">
                         Dyah Kurniawati adalah seorang pendidik sekaligus sastrawan yang mendedikasikan hidupnya untuk pelestarian bahasa dan sastra Jawa. Saat ini, beliau mengabdi sebagai Guru Bahasa Jawa di MTsN Kota Madiun.
                         <br /><br />Baginya, menulis adalah jalan perjuangan budaya. Jejak kreativitasnya telah terukir melalui ratusan karya yang tersebar di berbagai media bergengsi berbahasa Jawa, seperti Jaya Baya, Panjebar Semangat, Djaka Lodang, Lensa Sastra, hingga harian Solopos.
@@ -60,7 +74,6 @@ export default function Tentang() {
                         <br /><br />Dedikasinya dalam dunia literasi tidak hanya membuahkan karya, tetapi juga berbagai penghargaan bergengsi, salah satunya sebagai Penulis Terproduktif di tingkat Kemenag Provinsi Jawa Timur. Melalui platform E-Cerkak ini, beliau berharap dapat menularkan semangat menulis kepada generasi muda agar bahasa Jawa tetap hidup, relevan, dan terus berkembang di era digital. "Genggam Teknologinya, Lestarikan Sastranya!"
                     </p>
                 </div>
-                <img src={Img1} alt="Dyah Kurniawati" className="mx-auto min-w-auto shadow-xl" />
             </section>
         </>
     );

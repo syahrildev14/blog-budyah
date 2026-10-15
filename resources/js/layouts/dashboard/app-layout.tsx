@@ -7,20 +7,16 @@ interface AdminLayoutProps {
 }
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-gray-100 text-accent">
-      {/* Sidebar */}
-      <Sidebar sidebarOpen={sidebarOpen} />
+    <div className="flex min-h-screen bg-gray-50 text-accent">
+      <Sidebar sidebarOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* Main */}
-      <div className="flex flex-1 flex-col">
-        {/* Header */}
-        <Header toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Header toggleSidebar={() => setSidebarOpen((open) => !open)} />
 
-        {/* Content */}
-        <main className="p-6">{children}</main>
+        <main className="flex-1 p-4 md:p-6 lg:p-8">{children}</main>
       </div>
     </div>
   );

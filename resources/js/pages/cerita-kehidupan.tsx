@@ -1,5 +1,8 @@
 import { Head, Link } from '@inertiajs/react'
 import AppLayout from '@/layouts/app-layout'
+import { handleImageError } from '@/lib/utils'
+import Pagination from '@/components/ui/Pagination'
+import type { Paginated } from '@/types'
 
 interface Post {
     id: number
@@ -11,19 +14,17 @@ interface Post {
 }
 
 interface CeritaKehidupanProps {
-    posts?: Post[]
+    posts: Paginated<Post>
 }
 
-export default function CeritaKehidupan({ posts = [] }: CeritaKehidupanProps) {
-    console.log(posts);
-
+export default function CeritaKehidupan({ posts }: CeritaKehidupanProps) {
     return (
         <>
             <Head title="Cerita Kehidupan" />
 
             <section className="space-y-8">
                 <h1 className='font-bold text-3xl border-b-4 border-red-600 text-gray-800'>Cerita Kehidupan</h1>
-                {posts.map((post) => (
+                {posts.data.map((post) => (
                     <Link
                         key={post.id}
                         href={`/cerkak/${post.slug}`}
@@ -31,6 +32,7 @@ export default function CeritaKehidupan({ posts = [] }: CeritaKehidupanProps) {
                     >
                         <img
                             src={`/storage/${post.thumbnail}`}
+                            onError={handleImageError}
                             alt={post.title}
                             className="md:col-span-4 col-span-8 h-40 w-full object-cover rounded-md"
                         />
@@ -56,6 +58,8 @@ export default function CeritaKehidupan({ posts = [] }: CeritaKehidupanProps) {
                         </div>
                     </Link>
                 ))}
+
+                <Pagination links={posts.links} />
             </section>
         </>
     )

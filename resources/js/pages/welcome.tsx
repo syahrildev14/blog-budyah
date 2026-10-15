@@ -8,6 +8,7 @@ import { FaArrowDown } from 'react-icons/fa';
 
 import { Link, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
+import { handleImageError } from '@/lib/utils';
 
 interface Post {
     id: number;
@@ -103,6 +104,7 @@ export default function Home() {
                         >
                             <img
                                 src={`/storage/${popularPosts[0].thumbnail}`}
+                                onError={handleImageError}
                                 alt={popularPosts[0].title}
                                 className="w-full h-full object-cover group-hover:scale-105 transition duration-300 shadow-md"
                             />
@@ -132,6 +134,7 @@ export default function Home() {
                         >
                             <img
                                 src={`/storage/${post.thumbnail}`}
+                                onError={handleImageError}
                                 alt={post.title}
                                 className="md:w-60 md:h-30 w-40 h-25 object-cover rounded-md shadow-md"
                             />
@@ -155,6 +158,7 @@ export default function Home() {
                         >
                             <img
                                 src={`/storage/${post.thumbnail}`}
+                                onError={handleImageError}
                                 alt={post.title}
                                 className="md:w-60 md:h-30 w-40 h-25 object-cover rounded shadow-md"
                             />
@@ -191,6 +195,7 @@ export default function Home() {
                         >
                             <img
                                 src={`/storage/${post.thumbnail}`}
+                                onError={handleImageError}
                                 alt={post.title}
                                 className="md:w-72 md:h-44 w-40 h-25 object-cover rounded-md flex-shrink-0 shadow-md"
                             />

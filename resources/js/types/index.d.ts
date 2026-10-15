@@ -22,11 +22,23 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+export interface PaginationLink {
+    url: string | null;
+    label: string;
+    active: boolean;
+}
+
+export interface Paginated<T> {
+    data: T[];
+    links: PaginationLink[];
+}
+
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
     sidebarOpen: boolean;
+    newsPosts: { id: number; title: string; slug: string; thumbnail: string; created_at: string }[];
     [key: string]: unknown;
 }
 
@@ -34,6 +46,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
+    role: string;
     avatar?: string;
     email_verified_at: string | null;
     two_factor_enabled?: boolean;

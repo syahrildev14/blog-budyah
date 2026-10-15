@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Support\HtmlSanitizer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
@@ -15,7 +16,8 @@ class PostController extends Controller
     {
         $posts = Post::where('category', 'CERITA_LUCU')
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('cerita-lucu', [
             'posts' => $posts
@@ -26,7 +28,8 @@ class PostController extends Controller
     {
         $posts = Post::where('category', 'CERITA_MISTERI')
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('cerita-misteri', [
             'posts' => $posts
@@ -37,7 +40,8 @@ class PostController extends Controller
     {
         $posts = Post::where('category', 'CERITA_CINTA')
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('cerita-cinta', [
             'posts' => $posts
@@ -48,7 +52,8 @@ class PostController extends Controller
     {
         $posts = Post::where('category', 'CERITA_ANAK')
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('cerita-anak', [
             'posts' => $posts
@@ -59,7 +64,8 @@ class PostController extends Controller
     {
         $posts = Post::where('category', 'CERITA_KEHIDUPAN')
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('cerita-kehidupan', [
             'posts' => $posts
@@ -91,22 +97,11 @@ class PostController extends Controller
         Post::create([
             'title' => $validated['title'],
             'category' => $validated['category'],
-            'content' => $validated['content'],
+            'content' => HtmlSanitizer::clean($validated['content']),
             'thumbnail' => $thumbnailPath,
         ]);
 
         return redirect()->back()->with('success', 'Artikel berhasil disimpan');
-    }
-
-    public function show($slug)
-    {
-        $post = Post::where('slug', $slug)
-            ->with('comments')
-            ->firstOrFail();
-
-        return Inertia::render('Detail', [
-            'post' => $post,
-        ]);
     }
 
     public function update(Request $request, $id)
@@ -121,12 +116,15 @@ class PostController extends Controller
 
         // update field normal
         $post->title = $validated['title'];
-        $post->content = $validated['content'];
+        $post->content = HtmlSanitizer::clean($validated['content']);
 
         // update thumbnail kalau ada file baru
         if ($request->hasFile('thumbnail')) {
-            $thumbnailPath = $request->file('thumbnail')->store('posts', 'public');
-            $post->thumbnail = $thumbnailPath;
+            if ($post->thumbnail) {
+                Storage::disk('public')->delete($post->thumbnail);
+            }
+
+            $post->thumbnail = $request->file('thumbnail')->store('posts', 'public');
         }
 
         $post->save();
@@ -134,27 +132,26 @@ class PostController extends Controller
         return back()->with('success', 'Data berhasil diupdate');
     }
 
-
-
-
-
-    public function byCategory($category)
+    public function uploadImage(Request $request)
     {
-        $posts = Post::where('category', $category)
-            ->latest()
-            ->get();
+        $request->validate([
+            'file' => 'required|image|max:4096',
+        ]);
 
-        return Inertia::render('post/category', [
-            'posts' => $posts,
-            'category' => $category,
+        $path = $request->file('file')->store('posts/content', 'public');
+
+        return response()->json([
+            'location' => Storage::url($path),
         ]);
     }
+
+
 
     // View Category By User
     public function sd()
     {
         return Inertia::render('kategori/sd', [
-            'posts' => Post::where('category', 'SD')->latest()->get(),
+            'posts' => Post::where('category', 'SD')->latest()->paginate(10)->withQueryString(),
             'canRegister' => Features::enabled(Features::registration()),
         ]);
     }
@@ -162,7 +159,7 @@ class PostController extends Controller
     public function smp()
     {
         return Inertia::render('kategori/smp', [
-            'posts' => Post::where('category', 'SMP')->latest()->get(),
+            'posts' => Post::where('category', 'SMP')->latest()->paginate(10)->withQueryString(),
             'canRegister' => Features::enabled(Features::registration()),
         ]);
     }
@@ -170,7 +167,7 @@ class PostController extends Controller
     public function sma()
     {
         return Inertia::render('kategori/sma', [
-            'posts' => Post::where('category', 'SMA')->latest()->get(),
+            'posts' => Post::where('category', 'SMA')->latest()->paginate(10)->withQueryString(),
             'canRegister' => Features::enabled(Features::registration()),
         ]);
     }
@@ -178,7 +175,7 @@ class PostController extends Controller
     public function umum()
     {
         return Inertia::render('kategori/umum', [
-            'posts' => Post::where('category', 'Umum')->latest()->get(),
+            'posts' => Post::where('category', 'Umum')->latest()->paginate(10)->withQueryString(),
             'canRegister' => Features::enabled(Features::registration()),
         ]);
     }

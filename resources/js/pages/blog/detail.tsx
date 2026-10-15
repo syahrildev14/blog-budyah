@@ -1,6 +1,7 @@
 import React, { FormEvent } from 'react'
 import { Head, useForm, router } from '@inertiajs/react'
 import AppLayout from '@/layouts/app-layout'
+import { handleImageError } from '@/lib/utils'
 
 interface Comment {
     id: number
@@ -53,6 +54,7 @@ export default function Detail({ post }: DetailProps) {
             <article className="space-y-6">
                 <img
                     src={`/storage/${post.thumbnail}`}
+                    onError={handleImageError}
                     alt={post.title}
                     className="w-full h-[400px] object-cover rounded-lg shadow-md"
                 />

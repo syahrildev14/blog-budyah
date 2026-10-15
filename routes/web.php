@@ -6,10 +6,16 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GuruDashboardController;
+use App\Models\Post;
 
 
 // Public Routes
-Route::get('/', fn() => Inertia::render('welcome'))->name('home');
+Route::get('/', function () {
+    return Inertia::render('welcome', [
+        'popularPosts' => Post::latest()->take(5)->get(),
+        'topPosts' => Post::latest()->take(10)->get(),
+    ]);
+})->name('home');
 Route::get('/materi', fn() => Inertia::render('materi'))->name('materi');
 Route::get('/tentang', fn() => Inertia::render('tentang'))->name('tentang');
 Route::get('/cerita-lucu', [PostController::class, 'ceritaLucu'])
@@ -30,21 +36,28 @@ Route::get('/smp-mts', [PostController::class, 'smp'])->name('smp-mts');
 Route::get('/sma-smk', [PostController::class, 'sma'])->name('sma-smk');
 Route::get('/umum', [PostController::class, 'umum'])->name('umum');
 
+// Login Guru (halaman terpisah, tanpa tombol signup)
+Route::get('/admin/login', fn() => Inertia::render('auth/admin-login'))
+    ->middleware('guest')
+    ->name('admin.login');
+
 // Detail Cerkak
 Route::get('/cerkak/{slug}', [BlogController::class, 'show'])->name('cerkak.show');
-Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
+Route::post('/comment', [CommentController::class, 'store'])
+    ->middleware('throttle:6,1')
+    ->name('comment.store');
 
 // Protected Routes (Siswa / Auth)
 Route::middleware('auth')->group(function () {
     Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
     Route::post('/post', [PostController::class, 'store'])->name('post.store');
-    Route::get('/kategori/{category}', [PostController::class, 'show'])->name('kategori.show');
+    Route::post('/upload-image', [PostController::class, 'uploadImage'])->name('post.upload-image');
 });
 
 // =====================================================
 // Dashboard Guru
 // =====================================================
-Route::prefix('guru')->name('guru.')->group(function () {
+Route::prefix('guru')->name('guru.')->middleware(['auth', 'guru'])->group(function () {
     // =======================
     // DASHBOARD
     // =======================

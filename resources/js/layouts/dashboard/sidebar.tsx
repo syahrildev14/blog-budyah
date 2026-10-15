@@ -1,133 +1,189 @@
-import { Link, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
+import Swal from "sweetalert2";
 import {
-    Home,
+    LayoutDashboard,
     Smile,
-    Zap,
+    Ghost,
     Heart,
-    Users,
+    Baby,
     BookOpen,
     Layers,
-    Upload,
     ChevronDown,
+    LogOut,
+    Settings,
+    X,
 } from "lucide-react";
 import { useState } from "react";
+import Logo from "@/assets/logo.png";
 
 interface SidebarProps {
     sidebarOpen: boolean;
+    onClose: () => void;
 }
 
-export default function Sidebar({ sidebarOpen }: SidebarProps) {
-    const [openKategori, setOpenKategori] = useState<boolean>(false);
-    const { url } = usePage(); // Ambil path saat ini
+const mainMenu = [
+    { name: "Dashboard", path: "/guru/dashboard", icon: LayoutDashboard },
+    { name: "Cerita Lucu", path: "/guru/cerita-lucu", icon: Smile },
+    { name: "Cerita Misteri", path: "/guru/cerita-misteri", icon: Ghost },
+    { name: "Cerita Cinta", path: "/guru/cerita-cinta", icon: Heart },
+    { name: "Cerita Anak", path: "/guru/cerita-anak", icon: Baby },
+    { name: "Cerita Kehidupan", path: "/guru/cerita-kehidupan", icon: BookOpen },
+];
 
-    // Helper untuk mengecek active
+const kategoriMenu = [
+    { name: "SD / MI", path: "/guru/kategori/sd" },
+    { name: "SMP / MTs", path: "/guru/kategori/smp" },
+    { name: "SMA / SMK", path: "/guru/kategori/sma" },
+    { name: "Umum", path: "/guru/kategori/umum" },
+];
+
+export default function Sidebar({ sidebarOpen, onClose }: SidebarProps) {
+    const { url } = usePage();
+    const [openKategori, setOpenKategori] = useState(() =>
+        kategoriMenu.some((item) => item.path === url)
+    );
+
     const isActive = (path: string) => url === path;
 
+    const handleLogout = () => {
+        Swal.fire({
+            title: "Keluar dari akun?",
+            text: "Anda akan diarahkan ke halaman login.",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#dc2626",
+            cancelButtonText: "Batal",
+            confirmButtonText: "Ya, keluar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.post("/logout", {}, { onSuccess: () => router.visit("/login") });
+            }
+        });
+    };
+
     return (
-        <aside
-            className={`bg-red-700 text-white w-64 transition-all duration-300 sticky top-0
-      ${sidebarOpen ? "flex" : "hidden"} md:flex flex-col`}
-        >
-            {/* Header / Brand */}
-            <div className="p-6 text-xl font-bold border-b border-red-600">
-                Dashboard Guru
-            </div>
-
-            <nav className="p-4 flex-1 flex flex-col gap-2">
-                {/* Main Menu */}
-                <Link
-                    href="/guru/dashboard"
-                    className={`flex items-center gap-3 px-4 py-2 rounded hover:bg-red-500 ${isActive("/guru/dashboard") ? "bg-red-500" : ""
-                        }`}
-                >
-                    <Home size={18} />
-                    <span>Dashboard</span>
-                </Link>
-
-                <Link
-                    href="/guru/cerita-lucu"
-                    className={`flex items-center gap-3 px-4 py-2 rounded hover:bg-red-500 ${isActive("/guru/cerita-lucu") ? "bg-red-500" : ""
-                        }`}
-                >
-                    <Smile size={18} />
-                    <span>Cerita Lucu</span>
-                </Link>
-
-                <Link
-                    href="/guru/cerita-misteri"
-                    className={`flex items-center gap-3 px-4 py-2 rounded hover:bg-red-500 ${isActive("/guru/cerita-misteri") ? "bg-red-500" : ""
-                        }`}
-                >
-                    <Zap size={18} />
-                    <span>Cerita Misteri</span>
-                </Link>
-
-                <Link
-                    href="/guru/cerita-cinta"
-                    className={`flex items-center gap-3 px-4 py-2 rounded hover:bg-red-500 ${isActive("/guru/cerita-cinta") ? "bg-red-500" : ""
-                        }`}
-                >
-                    <Heart size={18} />
-                    <span>Cerita Cinta</span>
-                </Link>
-
-                <Link
-                    href="/guru/cerita-anak"
-                    className={`flex items-center gap-3 px-4 py-2 rounded hover:bg-red-500 ${isActive("/guru/cerita-anak") ? "bg-red-500" : ""
-                        }`}
-                >
-                    <Users size={18} />
-                    <span>Cerita Anak</span>
-                </Link>
-
-                <Link
-                    href="/guru/cerita-kehidupan"
-                    className={`flex items-center gap-3 px-4 py-2 rounded hover:bg-red-500 ${isActive("/guru/cerita-kehidupan") ? "bg-red-500" : ""
-                        }`}
-                >
-                    <BookOpen size={18} />
-                    <span>Cerita Kehidupan</span>
-                </Link>
-
-                {/* Dropdown Kategori */}
-                <button
-                    onClick={() => setOpenKategori(!openKategori)}
-                    className="flex w-full items-center justify-between px-4 py-2 rounded hover:bg-red-500"
-                >
-                    <div className="flex items-center gap-3">
-                        <Layers size={18} />
-                        <span>Kategori Jenjang</span>
-                    </div>
-                    <ChevronDown
-                        size={16}
-                        className={`transition-transform duration-200 ${openKategori ? "rotate-180" : ""
-                            }`}
-                    />
-                </button>
-
-                {/* Dropdown Items */}
+        <>
+            {/* Mobile backdrop */}
+            {sidebarOpen && (
                 <div
-                    className={`ml-10 flex flex-col gap-1 overflow-hidden transition-all duration-300
-          ${openKategori ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}`}
-                >
-                    {[
-                        { name: "SD", path: "/guru/kategori/sd" },
-                        { name: "SMP", path: "/guru/kategori/smp" },
-                        { name: "SMA", path: "/guru/kategori/sma" },
-                        { name: "UMUM", path: "/guru/kategori/umum" },
-                    ].map((item) => (
-                        <Link
-                            key={item.name}
-                            href={item.path}
-                            className={`flex items-center gap-2 px-3 py-2 rounded hover:bg-red-500 text-sm ${isActive(item.path) ? "bg-red-500" : ""
-                                }`}
-                        >
-                            <Layers size={12} />
-                            {item.name}
-                        </Link>
-                    ))}
+                    className="fixed inset-0 z-40 bg-black/50 md:hidden"
+                    onClick={onClose}
+                    aria-hidden
+                />
+            )}
+
+            <aside
+                className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-gray-200 bg-white text-gray-700 shadow-xl transition-transform duration-300 md:sticky md:top-0 md:h-screen md:translate-x-0 md:shadow-none ${
+                    sidebarOpen ? "translate-x-0" : "-translate-x-full"
+                }`}
+            >
+                {/* Brand */}
+                <div className="flex items-center justify-between gap-2 border-b border-gray-100 px-5 py-5">
+                    <Link href="/" className="flex items-center gap-2 overflow-hidden">
+                        <img
+                            src={Logo}
+                            alt="E-Cerkak"
+                            className="h-9 w-9 flex-shrink-0 rounded-md bg-gray-50 object-contain p-1 ring-1 ring-gray-100"
+                        />
+                        <div className="truncate leading-tight">
+                            <p className="truncate text-sm font-bold text-gray-900">E-Cerkak</p>
+                            <p className="truncate text-[11px] text-gray-400">Dashboard Guru</p>
+                        </div>
+                    </Link>
+                    <button
+                        onClick={onClose}
+                        className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 md:hidden"
+                        aria-label="Tutup menu"
+                    >
+                        <X size={18} />
+                    </button>
                 </div>
-            </nav>
-        </aside>
+
+                <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
+                    <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                        Menu Utama
+                    </p>
+                    {mainMenu.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                            <Link
+                                key={item.path}
+                                href={item.path}
+                                onClick={onClose}
+                                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+                                    isActive(item.path)
+                                        ? "bg-red-50 text-red-600"
+                                        : "text-gray-600 hover:bg-gray-50 hover:text-red-600"
+                                }`}
+                            >
+                                <Icon size={18} />
+                                <span className="truncate">{item.name}</span>
+                            </Link>
+                        );
+                    })}
+
+                    <p className="px-3 pb-1 pt-4 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                        Kategori Jenjang
+                    </p>
+                    <button
+                        onClick={() => setOpenKategori(!openKategori)}
+                        className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 transition hover:bg-gray-50 hover:text-red-600"
+                    >
+                        <span className="flex items-center gap-3">
+                            <Layers size={18} />
+                            Kategori
+                        </span>
+                        <ChevronDown
+                            size={16}
+                            className={`transition-transform duration-200 ${openKategori ? "rotate-180" : ""}`}
+                        />
+                    </button>
+                    <div
+                        className={`overflow-hidden transition-all duration-300 ${
+                            openKategori ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
+                        }`}
+                    >
+                        <div className="space-y-1 py-1 pl-10 pr-1">
+                            {kategoriMenu.map((item) => (
+                                <Link
+                                    key={item.path}
+                                    href={item.path}
+                                    onClick={onClose}
+                                    className={`block rounded-lg px-3 py-2 text-sm transition ${
+                                        isActive(item.path)
+                                            ? "bg-red-50 font-semibold text-red-600"
+                                            : "text-gray-500 hover:bg-gray-50 hover:text-red-600"
+                                    }`}
+                                >
+                                    {item.name}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </nav>
+
+                <div className="space-y-1 border-t border-gray-100 p-3">
+                    <Link
+                        href="/settings/profile"
+                        onClick={onClose}
+                        className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+                            url.startsWith("/settings")
+                                ? "bg-red-50 text-red-600"
+                                : "text-gray-600 hover:bg-gray-50 hover:text-red-600"
+                        }`}
+                    >
+                        <Settings size={18} />
+                        Pengaturan
+                    </Link>
+                    <button
+                        onClick={handleLogout}
+                        className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 transition hover:bg-red-50 hover:text-red-600"
+                    >
+                        <LogOut size={18} />
+                        Keluar
+                    </button>
+                </div>
+            </aside>
+        </>
     );
 }

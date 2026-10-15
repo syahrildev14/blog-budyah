@@ -1,6 +1,7 @@
 import { InertiaLinkProps } from '@inertiajs/react';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import FallbackThumbnail from '@/assets/logo.png';
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -15,4 +16,12 @@ export function isSameUrl(
 
 export function resolveUrl(url: NonNullable<InertiaLinkProps['href']>): string {
     return typeof url === 'string' ? url : url.url;
+}
+
+export function handleImageError(e: React.SyntheticEvent<HTMLImageElement>) {
+    const img = e.currentTarget;
+
+    if (img.src !== FallbackThumbnail) {
+        img.src = FallbackThumbnail;
+    }
 }

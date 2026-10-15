@@ -1,6 +1,7 @@
 import { Link, router, usePage } from '@inertiajs/react';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, Settings } from 'lucide-react';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 import Logo from '@/assets/logo.png'
 
 export default function Header() {
@@ -10,6 +11,22 @@ export default function Header() {
 
     const [open, setOpen] = useState(false);
     const [openKategori, setOpenKategori] = useState(false);
+
+    function handleLogout() {
+        Swal.fire({
+            title: 'Keluar dari akun?',
+            text: 'Anda akan diarahkan ke halaman login.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonText: 'Batal',
+            confirmButtonText: 'Ya, keluar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.post('/logout', {}, { onSuccess: () => router.visit('/login') });
+            }
+        });
+    }
 
     function isActive(path: string) {
         return url === path || url.startsWith(path + '/');
@@ -50,6 +67,13 @@ export default function Header() {
                 <nav className="hidden md:flex gap-4 items-center">
                     {auth?.user ? (
                         <>
+                            <Link
+                                href="/settings/profile"
+                                className="p-2 rounded-md text-gray-600 hover:bg-gray-100 hover:text-red-600 transition"
+                                title="Pengaturan"
+                            >
+                                <Settings size={18} />
+                            </Link>
                             <button
                                 onClick={() => router.get('/post/create')}
                                 className="bg-red-600 text-white border border-red-600 px-3 py-1 rounded-sm hover:bg-transparent hover:text-red-600 duration-300"
@@ -57,11 +81,7 @@ export default function Header() {
                                 Post
                             </button>
                             <button
-                                onClick={() =>
-                                    router.post('/logout', {}, {
-                                        onSuccess: () => router.visit('/login'),
-                                    })
-                                }
+                                onClick={handleLogout}
                                 className="bg-gray-200 border px-3 py-1 rounded-sm hover:bg-gray-300"
                             >
                                 Logout
@@ -190,6 +210,16 @@ export default function Header() {
                     {/* AUTH */}
                     {auth?.user ? (
                         <div className="space-y-2">
+                            <Link
+                                href="/settings/profile"
+                                onClick={() => setOpen(false)}
+                                className="flex items-center justify-center gap-2 w-full rounded-md border border-gray-200 py-2 text-gray-700
+                               hover:bg-gray-50 transition"
+                            >
+                                <Settings size={16} />
+                                Pengaturan
+                            </Link>
+
                             <button
                                 onClick={() => {
                                     setOpen(false);
@@ -202,11 +232,7 @@ export default function Header() {
                             </button>
 
                             <button
-                                onClick={() =>
-                                    router.post('/logout', {}, {
-                                        onSuccess: () => router.visit('/login'),
-                                    })
-                                }
+                                onClick={handleLogout}
                                 className="w-full rounded-md bg-gray-200 py-2
                                hover:bg-gray-300 transition"
                             >
